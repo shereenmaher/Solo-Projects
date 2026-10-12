@@ -138,3 +138,10 @@ class Shipment(models.Model):
     created_at=models.DateField(auto_now_add=True)
     updated_at=models.DateField(auto_now=True)
     objects=shipmentManager()
+
+class shipmentHistory(models.Model):
+    shipment=models.ForeignKey(Shipment,related_name='history',on_delete=models.CASCADE)
+    status=name=models.CharField(max_length=100)
+    location=name=models.CharField(max_length=150,blank=True)
+    eta=models.DateTimeField(null=True,blank=True)
+    created_at=models.DateField(auto_now_add=True)
