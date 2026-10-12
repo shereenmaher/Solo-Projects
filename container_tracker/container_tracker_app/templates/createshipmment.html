@@ -6,7 +6,7 @@
     <title>Create Shipment</title>
 </head>
 <body>
-     <h1>Welcome  {{  user.firstname  }}</h1>
+    <h2>Welcome  {{  user.firstname  }}</h2>
     <a href="/dashboard">Dashboard</a>
     <a href="/logout">Logout</a>
 
@@ -27,6 +27,8 @@
         {% if errors.containernumbererror   %}
             <p>{{ errors.containernumbererror }}</p>
         {% endif  %}
+
+        <button type="submit">Create</button>
 
     </form>
 </body>

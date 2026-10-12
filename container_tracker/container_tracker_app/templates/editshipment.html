@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Shipment</title>
+</head>
+<body>
+    <h2>Welcome  {{  user.firstname  }}</h2>
+    <a href="/dashboard">Dashboard</a>
+    <a href="/logout">Logout</a>
+
+    <form action="" method="POST">
+        {% csrf_token %}
+
+        <label for="shipmentname">shipmentname :</label>
+        <input type="text" name="shipmentname">
+
+        {% if errors.shipmentnameerror   %}
+            <p>{{ errors.shipmentnameerror  }}</p>
+        {% endif  %}
+
+        <br>
+        <label for="containernumber">containernumber :</label>
+        <input type="text" name="containernumber">
+
+        {% if errors.containernumbererror   %}
+            <p>{{ errors.containernumbererror }}</p>
+        {% endif  %}
+
+        <button type="submit">Save</button>
+
+    </form>
+</body>
+</html>
