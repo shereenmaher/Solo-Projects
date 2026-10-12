@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+</head>
+<body>
+    
+    <h2>Welcome to your Tracker, {{ user.firstname }}</h2>
+
+    <a href="/newshipment">+create shipment</a>
+    <a href="/logout">logout</a>
+
+    <h2>All Shipments</h2>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Shipment Name</th>
+                <th>Container Number</th>
+                <th>Status</th>
+                <th>ETA</th>
+                <th>last Checked</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {% for shipment in shipments %}
+            <tr>
+                <td>
+                    <a href="/shipments/{{ shipment.id }}">{{ shipment.title }}</a>
+                </td>
+
+                <td>
+                    {{ shipment.name }}
+                </td>
+
+                <td>
+                    {{ shipment.containernumber }}
+                </td>
+                <td>
+                    {{ shipment.status }}
+                </td>
+                <td>
+                    {{ shipment.eta }}
+                </td>
+                <td>
+                    {{ shipment.lastchecked }}
+                </td>
+
+                <td>
+                    {% if shipment.user.id == user.id %}
+                        <a href="/shipments/delete/{{ show.id }}">Delete</a>
+                        <a href="/shipments/edit/{{ show.id }}">Edit</a>
+                    {% else  %}
+                        <a href="/shipments/{{ show.id }}">Details</a>
+                    {% endif  %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+
+    </table>
+</body>
+</html>
