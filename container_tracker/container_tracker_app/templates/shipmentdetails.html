@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shipment Details</title>
+</head>
+<body>
+    <h2>Welcome to your Tracker, {{ user.firstname }}</h2>
+
+    <a href="/dashboard">Dashboard</a>
+    <a href="/logout">logout</a>
+
+    <h1>{{ shipment.name }}</h1>
+    <p> added by {{ user.firstname }} {{ user.lastname }}</p>
+    <p> container number {{ shipment.number }}</p>
+    <p> status {{ shipment.status }}</p>
+    <p> ETA {{ shipment.eta }}</p>
+    <p> vessel {{ shipment.vessel }}</p>
+    <p> origin Port {{ shipment.origin }}</p>
+    <p> destination Port {{ shipment.destination }}</p>
+    <p> last checked {{ shipment.lastchecked }}</p>
+    <p> History <a href="/shipments/{{ shipment.id}}/history"> shipment history</a>></p>
+
+</body>
+</html>
