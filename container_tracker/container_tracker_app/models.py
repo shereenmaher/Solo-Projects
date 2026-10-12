@@ -89,6 +89,33 @@ class UserManager(models.Manager):
             return user
         return None
 
+class shipmentManager(models.Manager):
+    #shipment validation
+    def shipment_validation(self,data):
+        errors={}
+
+        name=data['name']
+        number=data['number']
+        status=data['status']
+        eta=data['eta']
+        vessel=data['vessel']
+        origin=data['origin']
+        destination=data['destination']
+        lastchecked=data['lastchecked']
+
+        if len(name) == 0:
+            errors['nameerror']="name is required"
+        if len(number) == 0:
+            errors['numbererror']="number is required"
+        elif len(name) > 5:
+            errors['nameerror']="name must be at least 4 characters"
+        elif len(number) != 11:
+            errors['numbererror']="number must be 11 characters"
+        if not re.fullmatch(r'[A-Z]{4}[0-9]{7}',number):
+            errors['numbererror']="Invalid container number format"
+
+        return errors
+    
 class User(models.Model):
     firstname=models.CharField(max_length=255)
     lastname=models.CharField(max_length=255)
@@ -107,3 +134,7 @@ class Shipment(models.Model):
     origin=models.CharField(max_length=150,blank=True)
     destination=models.CharField(max_length=150,blank=True)
     lastchecked=models.DateTimeField(null=True,blank=True)
+    user=models.ForeignKey(User,related_name="shipments",on_delete=models.DO_NOTHING)
+    created_at=models.DateField(auto_now_add=True)
+    updated_at=models.DateField(auto_now=True)
+    objects=shipmentManager()
