@@ -97,3 +97,13 @@ class User(models.Model):
     created_at=models.DateField(auto_now_add=True)
     updated_at=models.DateField(auto_now=True)
     objects=UserManager()
+
+class Shipment(models.Model):
+    name=models.CharField(max_length=100)
+    number=models.CharField(max_length=20,unique=True)
+    status=models.CharField(max_length=100,default="Unknown")
+    eta=models.DateTimeField(null=True,blank=True)
+    vessel=models.CharField(max_length=150,blank=True)
+    origin=models.CharField(max_length=150,blank=True)
+    destination=models.CharField(max_length=150,blank=True)
+    lastchecked=models.DateTimeField(null=True,blank=True)
