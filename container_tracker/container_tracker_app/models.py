@@ -115,6 +115,14 @@ class shipmentManager(models.Manager):
             errors['numbererror']="Invalid container number format"
 
         return errors
+
+    def create_shipment(self,data,user):
+        name=data['name']
+        number=data['number']
+        
+        shipment=Shipment.objects.create(name=name,number=number,user=user)
+
+        return shipment
     
 class User(models.Model):
     firstname=models.CharField(max_length=255)
