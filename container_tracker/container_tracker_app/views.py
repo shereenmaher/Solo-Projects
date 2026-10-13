@@ -58,7 +58,7 @@ def shipments(request):
         }
         return render(request,"dashboard.html",context)
 
-
+#create shipment if user logged in 
 def create_shipment(request):
 
     if "user_id" not in request.session:
@@ -97,3 +97,18 @@ def create_shipment(request):
             }
 
             return render(request,"dashboard.html",context)
+
+#display the details of the shipment 
+def view_shipment(request,shipment_id):
+    if "user_id" not in request.session:
+        return redirect("/dashboard")
+    else:
+        user=User.objects.get(id=request.session['user_id'])
+
+        shipment=Shipment.objects.get(id=shipment_id)
+
+        context={
+            "user":user,
+            "shipment":shipment
+        }
+        return render(request,"shipmentdetails.html",context)
