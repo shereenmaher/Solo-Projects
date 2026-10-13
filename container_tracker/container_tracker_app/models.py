@@ -123,6 +123,12 @@ class shipmentManager(models.Manager):
         shipment=Shipment.objects.create(name=name,number=number,user=user)
 
         return shipment
+
+    def update_shipment(self,data,shipment):
+        shipment.name=data['name']
+        shipment.number=data['number']
+        shipment.save()
+
     
 class User(models.Model):
     firstname=models.CharField(max_length=255)
@@ -149,7 +155,7 @@ class Shipment(models.Model):
 
 class shipmentHistory(models.Model):
     shipment=models.ForeignKey(Shipment,related_name='history',on_delete=models.CASCADE)
-    status=name=models.CharField(max_length=100)
-    location=name=models.CharField(max_length=150,blank=True)
+    status=models.CharField(max_length=100)
+    location=models.CharField(max_length=150,blank=True)
     eta=models.DateTimeField(null=True,blank=True)
     created_at=models.DateField(auto_now_add=True)
