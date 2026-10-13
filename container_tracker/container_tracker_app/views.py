@@ -112,3 +112,9 @@ def view_shipment(request,shipment_id):
             "shipment":shipment
         }
         return render(request,"shipmentdetails.html",context)
+
+
+#logout view
+def logout(request):
+    request.session.flush()
+    return redirect("/")
