@@ -2,6 +2,27 @@ from django.db import models
 import re
 import bcrypt
 from datetime import date
+import requests
+from django.utils import timezone
+from django.utils.dateparse import parse_datetime
+
+
+def fetch_container_data(number):
+    url = f"https://traqocontainer.com/api/v1/sandbox/container/{number}"
+
+    try:
+        response = requests.get(url, timeout=30)
+        response.raise_for_status()
+    except requests.RequestException:
+        return None
+
+    result = response.json()
+
+    if result.get("success"):
+        return result.get("data")
+
+    return None
+
 
 class UserManager(models.Manager):
     #register validation
@@ -80,14 +101,6 @@ class UserManager(models.Manager):
 
         return errors
 
-    # def login_user(self,data):
-
-    #     email=data['email']
-    #     password=data['password']
-    #     user=User.objects.filter(email=email)
-    #     if bcrypt.checkpw(password.encode(), user.password.encode()):
-    #         return user
-    #     return None
 
     def login_user(self, data):
         errors = self.login_validation(data)
@@ -126,13 +139,37 @@ class shipmentManager(models.Manager):
 
         return errors
 
-    def create_shipment(self,data,user):
-        name=data['name']
-        number=data['number']
-        
-        shipment=Shipment.objects.create(name=name,number=number,user=user)
+    
+    def create_shipment(self, data, user):
+        name = data['name']
+        number = data['number']
+
+        shipment = Shipment.objects.create(
+            name=name,
+            number=number,
+            user=user
+        )
+
+        api_data = fetch_container_data(number)
+
+        if api_data:
+            shipment.status = api_data.get('status') or "Unknown"
+            shipment.origin = api_data.get('origin') or ""
+            shipment.destination = api_data.get('destination') or ""
+
+            eta = api_data.get('eta')
+
+            if eta:
+                shipment.eta = parse_datetime(eta)
+
+                if shipment.eta and timezone.is_naive(shipment.eta):
+                    shipment.eta = timezone.make_aware(shipment.eta)
+
+            shipment.lastchecked = timezone.now()
+            shipment.save()
 
         return shipment
+
 
     def update_shipment(self,data,shipment):
         shipment.name=data['name']
