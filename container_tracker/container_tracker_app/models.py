@@ -80,13 +80,23 @@ class UserManager(models.Manager):
 
         return errors
 
-    def login_user(self,data):
+    # def login_user(self,data):
 
-        email=data['email']
-        password=data['password']
-        user=User.objects.get(email=email)
-        if bcrypt.checkpw(password.encode(), user.password.encode()):
+    #     email=data['email']
+    #     password=data['password']
+    #     user=User.objects.filter(email=email)
+    #     if bcrypt.checkpw(password.encode(), user.password.encode()):
+    #         return user
+    #     return None
+
+    def login_user(self, data):
+        errors = self.login_validation(data)
+
+        if len(errors) == 0:
+            email = data['email']
+            user = User.objects.get(email=email)
             return user
+
         return None
 
 class shipmentManager(models.Manager):
@@ -96,18 +106,18 @@ class shipmentManager(models.Manager):
 
         name=data['name']
         number=data['number']
-        status=data['status']
-        eta=data['eta']
-        vessel=data['vessel']
-        origin=data['origin']
-        destination=data['destination']
-        lastchecked=data['lastchecked']
+        # status=data['status']
+        # eta=data['eta']
+        # vessel=data['vessel']
+        # origin=data['origin']
+        # destination=data['destination']
+        # lastchecked=data['lastchecked']
 
         if len(name) == 0:
             errors['nameerror']="name is required"
         if len(number) == 0:
             errors['numbererror']="number is required"
-        elif len(name) > 5:
+        elif len(name) < 5:
             errors['nameerror']="name must be at least 4 characters"
         elif len(number) != 11:
             errors['numbererror']="number must be 11 characters"
@@ -133,7 +143,7 @@ class shipmentManager(models.Manager):
 class User(models.Model):
     firstname=models.CharField(max_length=255)
     lastname=models.CharField(max_length=255)
-    email=models.CharField(max_length=255)
+    email=models.CharField(max_length=255,unique=True)
     password=models.CharField(max_length=255)
     created_at=models.DateField(auto_now_add=True)
     updated_at=models.DateField(auto_now=True)
@@ -141,14 +151,14 @@ class User(models.Model):
 
 class Shipment(models.Model):
     name=models.CharField(max_length=100)
-    number=models.CharField(max_length=20,unique=True)
+    number=models.CharField(max_length=20)
     status=models.CharField(max_length=100,default="Unknown")
     eta=models.DateTimeField(null=True,blank=True)
     vessel=models.CharField(max_length=150,blank=True)
     origin=models.CharField(max_length=150,blank=True)
     destination=models.CharField(max_length=150,blank=True)
     lastchecked=models.DateTimeField(null=True,blank=True)
-    user=models.ForeignKey(User,related_name="shipments",on_delete=models.DO_NOTHING)
+    user=models.ForeignKey(User,related_name="shipments",on_delete=models.SET_NULL)
     created_at=models.DateField(auto_now_add=True)
     updated_at=models.DateField(auto_now=True)
     objects=shipmentManager()

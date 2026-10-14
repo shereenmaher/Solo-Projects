@@ -113,6 +113,37 @@ def view_shipment(request,shipment_id):
         }
         return render(request,"shipmentdetails.html",context)
 
+#edit shipemnt
+def edit_shipment(request,shipment_id):
+    if "user_id" not in request.session:
+        return redirect("/dashboard")
+    else:
+        user=User.objects.get(id=request.session['user_id'])
+
+        shipment=Shipment.objects.get(id=shipment_id)
+
+        if shipment.user.id != user.id:
+            return redirect("/dashboard")
+
+        if request.method == 'POST': 
+            errors=User.objects.shipment_validation(request.POST)
+            if len(errors) > 0 :
+                context={
+                    "user":user,
+                    "shipment":shipment,
+                    "errors":errors
+                }
+                return render(request,"editshipment.html",context)
+            else:
+                Shipment.objects.update_shipment(request.POST,shipment)
+                return redirect("/dashboard")
+        else:
+            context={
+                "user":user,
+                "shipment":shipment,
+            }
+            return render(request,"editshipment.html",context)
+
 
 #logout view
 def logout(request):

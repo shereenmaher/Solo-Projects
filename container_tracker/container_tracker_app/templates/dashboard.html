@@ -53,7 +53,6 @@
 
                 <td>
                     {% if shipment.user.id == user.id %}
-                        <a href="/shipments/delete/{{ show.id }}">Delete</a>
                         <a href="/shipments/edit/{{ show.id }}">Edit</a>
                     {% else  %}
                         <a href="/shipments/{{ show.id }}">Details</a>
