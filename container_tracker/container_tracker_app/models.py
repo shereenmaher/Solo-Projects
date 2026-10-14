@@ -15,7 +15,7 @@ class UserManager(models.Manager):
         confirm_pw=data['confirm_pw']
 
         if len(firstname) == 0:
-            errors['firsnameerror']="firstname is required"
+            errors['firstnameerror']="firstname is required"
         if len(lastname) == 0:
             errors['lastnameerror']="lastname is required"
         if len(email) == 0:
@@ -23,7 +23,7 @@ class UserManager(models.Manager):
         if len(password) == 0:
             errors['passworderror']="password is required"
         if len(firstname) < 2:
-            errors['firsnameerror']="firstname must be at least 2 chars"
+            errors['firstnameerror']="firstname must be at least 2 chars"
         if len(lastname) < 2:
             errors['lastnameerror']="lastname must be at least 2 chars"
         if len(password) < 8:

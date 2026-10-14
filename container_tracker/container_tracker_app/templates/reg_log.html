@@ -9,14 +9,14 @@
 
     <h1>Container Tracker</h1>
     <h2>Register</h2>
-    <form action="register" method="POST">
+    <form action="{% url 'register' %}" method="POST">
         {% csrf_token %}
 
         <label for="firstname">firstname :</label>
         <input type="text" name="firstname">
 
-        {% if errors.firsnameerror   %}
-            <p>{{ errors.firsnameerror  }}</p>
+        {% if errors.firstnameerror   %}
+            <p>{{ errors.firstnameerror  }}</p>
         {% endif  %}
 
         <br>
@@ -61,7 +61,7 @@
             <p>{{ errors.loginerror  }}</p>
         {% endif  %}
 
-    <form action="login" method="POST">
+    <form action="{% url 'login' %}" method="POST">
         {% csrf_token %}
 
         <label for="email">email :</label>
@@ -73,7 +73,7 @@
 
         <br>
         <label for="password">password :</label>
-        <input type="text" name="password">
+        <input type="password" name="password">
 
         {% if errors.loginpassworderror   %}
             <p>{{ errors.loginpassworderror  }}</p>
