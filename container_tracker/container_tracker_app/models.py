@@ -158,7 +158,7 @@ class Shipment(models.Model):
     origin=models.CharField(max_length=150,blank=True)
     destination=models.CharField(max_length=150,blank=True)
     lastchecked=models.DateTimeField(null=True,blank=True)
-    user=models.ForeignKey(User,related_name="shipments",on_delete=models.SET_NULL)
+    user=models.ForeignKey(User,related_name="shipments",on_delete=models.DO_NOTHING)
     created_at=models.DateField(auto_now_add=True)
     updated_at=models.DateField(auto_now=True)
     objects=shipmentManager()

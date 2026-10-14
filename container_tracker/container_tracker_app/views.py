@@ -96,7 +96,7 @@ def create_shipment(request):
                 "user": user
             }
 
-            return render(request,"dashboard.html",context)
+            return render(request,"createshipment.html",context)
 
 #display the details of the shipment 
 def view_shipment(request,shipment_id):
@@ -126,7 +126,7 @@ def edit_shipment(request,shipment_id):
             return redirect("/dashboard")
 
         if request.method == 'POST': 
-            errors=User.objects.shipment_validation(request.POST)
+            errors=Shipment.objects.shipment_validation(request.POST)
             if len(errors) > 0 :
                 context={
                     "user":user,
