@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,30 +7,48 @@
     <title>Edit Shipment</title>
 </head>
 <body>
-    <h2>Welcome  {{  user.firstname  }}</h2>
-    <a href="/dashboard">Dashboard</a>
-    <a href="/logout">Logout</a>
 
-    <form action="" method="POST">
+    <h2>Welcome {{ user.firstname }}</h2>
+
+    <a href="{% url 'dashboard' %}">Dashboard</a>
+    <a href="{% url 'logout' %}">Logout</a>
+
+    <h2>Edit Shipment</h2>
+
+    <form action="{% url 'edit_shipment' shipment.id %}" method="POST">
         {% csrf_token %}
 
-        <label for="shipmentname">shipmentname :</label>
-        <input type="text" name="shipmentname">
+        <label for="name">Shipment Name:</label>
+        <input
+            type="text"
+            id="name"
+            name="name"
+            value="{{ shipment.name }}"
+        >
 
-        {% if errors.shipmentnameerror   %}
-            <p>{{ errors.shipmentnameerror  }}</p>
-        {% endif  %}
+        {% if errors.nameerror %}
+            <p>{{ errors.nameerror }}</p>
+        {% endif %}
 
         <br>
-        <label for="containernumber">containernumber :</label>
-        <input type="text" name="containernumber">
 
-        {% if errors.containernumbererror   %}
-            <p>{{ errors.containernumbererror }}</p>
-        {% endif  %}
+        <label for="number">Container Number:</label>
+        <input
+            type="text"
+            id="number"
+            name="number"
+            value="{{ shipment.number }}"
+        >
 
-        <button type="submit">Save</button>
+        {% if errors.numbererror %}
+            <p>{{ errors.numbererror }}</p>
+        {% endif %}
+
+        <br>
+
+        <button type="submit">Save Changes</button>
 
     </form>
+
 </body>
 </html>
