@@ -10,5 +10,7 @@ urlpatterns = [
     path('create_shipment', views.create_shipment, name='create_shipment'),
     path('shipments/<int:shipment_id>',views.view_shipment,name='view_shipment'),
     path('shipments/edit/<int:shipment_id>',views.edit_shipment,name='edit_shipment'),
+    path('shipments/<int:shipment_id>/history',views.shipment_history,name='shipment_history'),
+
     path('logout', views.logout, name='logout'),
 ]

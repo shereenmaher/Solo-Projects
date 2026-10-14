@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,19 +9,23 @@
 <body>
     <h2>Welcome to your Tracker, {{ user.firstname }}</h2>
 
-    <a href="/dashboard">Dashboard</a>
-    <a href="/logout">logout</a>
+    <a href="{% url 'dashboard' %}">Dashboard</a>
+    <a href="{% url 'logout' %}">Logout</a>
 
     <h1>{{ shipment.name }}</h1>
-    <p> added by {{ user.firstname }} {{ user.lastname }}</p>
-    <p> container number {{ shipment.number }}</p>
-    <p> status {{ shipment.status }}</p>
-    <p> ETA {{ shipment.eta }}</p>
-    <p> vessel {{ shipment.vessel }}</p>
-    <p> origin Port {{ shipment.origin }}</p>
-    <p> destination Port {{ shipment.destination }}</p>
-    <p> last checked {{ shipment.lastchecked }}</p>
-    <p> History <a href="/shipments/{{ shipment.id}}/history"> shipment history</a>></p>
+
+    <p>Added by: {{ shipment.user.firstname }} {{ shipment.user.lastname }}</p>
+    <p>Container number: {{ shipment.number }}</p>
+    <p>Status: {{ shipment.status }}</p>
+    <p>ETA: {{ shipment.eta|default:"Not available" }}</p>
+    <p>Vessel: {{ shipment.vessel|default:"Not available" }}</p>
+    <p>Origin port: {{ shipment.origin|default:"Not available" }}</p>
+    <p>Destination port: {{ shipment.destination|default:"Not available" }}</p>
+    <p>Last checked: {{ shipment.lastchecked|default:"Not checked yet" }}</p>
+
+    <h3>Shipment History</h3>
+    <a href="{% url 'shipment_history' shipment.id %}">View shipment history</a>
 
 </body>
 </html>
+```

@@ -144,6 +144,26 @@ def edit_shipment(request,shipment_id):
             }
             return render(request,"editshipment.html",context)
 
+#shipment history
+def shipment_history(request, shipment_id):
+    if "user_id" not in request.session:
+        return redirect("/")
+
+    user = User.objects.get(id=request.session["user_id"])
+    shipment = Shipment.objects.filter(id=shipment_id).first()
+
+    if shipment is None:
+        return redirect("/dashboard")
+
+    history = shipment.history.all().order_by("-created_at")
+
+    context = {
+        "user": user,
+        "shipment": shipment,
+        "history": history
+    }
+
+    return render(request, "shipmenthistory.html", context)
 
 #logout view
 def logout(request):
