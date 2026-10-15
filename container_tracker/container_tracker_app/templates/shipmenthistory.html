@@ -1,12 +1,11 @@
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Shipment History</title>
-</head>
-<body>
+  </head>
+  <body>
     <h2>Welcome, {{ user.firstname }}</h2>
 
     <a href="{% url 'dashboard' %}">Dashboard</a>
@@ -16,32 +15,65 @@
     <p>Container number: {{ shipment.number }}</p>
 
     <table border="1">
-        <thead>
-            <tr>
-                <th>Status</th>
-                <th>Location</th>
-                <th>ETA</th>
-                <th>Date Recorded</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for record in history %}
-            <tr>
-                <td>{{ record.status }}</td>
-                <td>{{ record.location|default:"Not available" }}</td>
-                <td>{{ record.eta|default:"Not available" }}</td>
-                <td>{{ record.created_at }}</td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="4">No shipment history is available yet.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Event</th>
+          <th>Location</th>
+          <th>Details</th>
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for record in history %}
+
+        <tr>
+          <td>{{ record.event_date|default:record.created_at }}</td>
+
+          {% if record.change_type %}
+
+          <td>{{ record.change_type }} Change</td>
+
+          <td>-</td>
+
+          <td>
+            Changed from
+            <strong>{{ record.old_value }}</strong>
+            →
+            <strong>{{ record.new_value }}</strong>
+          </td>
+
+          <td>Detected</td>
+
+          {% else %}
+
+          <td>{{ record.description|default:record.status }}</td>
+
+          <td>{{ record.location|default:"Unknown" }}</td>
+
+          <td>{{ record.status }}</td>
+
+          <td>
+            {% if record.is_actual %} Actual {% else %} Estimated {% endif %}
+          </td>
+
+          {% endif %}
+        </tr>
+
+        {% empty %}
+
+        <tr>
+          <td colspan="5">No shipment history available yet.</td>
+        </tr>
+
+        {% endfor %}
+      </tbody>
     </table>
 
     <p>
-        <a href="{% url 'view_shipment' shipment.id %}">Back to shipment details</a>
+      <a href="{% url 'view_shipment' shipment.id %}">
+        Back to shipment details
+      </a>
     </p>
-</body>
+  </body>
 </html>

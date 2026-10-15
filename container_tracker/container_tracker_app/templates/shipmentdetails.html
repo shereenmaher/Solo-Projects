@@ -17,14 +17,23 @@
     <p>Added by: {{ shipment.user.firstname }} {{ shipment.user.lastname }}</p>
     <p>Container number: {{ shipment.number }}</p>
     <p>Status: {{ shipment.status }}</p>
-    <p>ETA: {{ shipment.eta|default:"Not available" }}</p>
+    {% if shipment.ata %}
+        <p>Arrived: {{ shipment.ata }}</p>
+    {% else %}
+        <p>ETA: {{ shipment.eta|default:"Not available" }}</p>
+    {% endif %}
     <p>Vessel: {{ shipment.vessel|default:"Not available" }}</p>
     <p>Origin port: {{ shipment.origin|default:"Not available" }}</p>
     <p>Destination port: {{ shipment.destination|default:"Not available" }}</p>
     <p>Last checked: {{ shipment.lastchecked|default:"Not checked yet" }}</p>
 
     <h3>Shipment History</h3>
-    <a href="{% url 'shipment_history' shipment.id %}">View shipment history</a>
+    <a href="{% url 'shipment_history' shipment.id %}">Shipment history</a>
+
+    <form action="{% url 'refresh_shipment' shipment.id %}" method="POST">
+    {% csrf_token %}
+    <button type="submit">Refresh Tracking Data</button>
+</form>
 
 </body>
 </html>

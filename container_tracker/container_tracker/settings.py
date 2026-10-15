@@ -126,3 +126,6 @@ MAILERS = {
         'BACKEND': 'django.core.mail.backends.console.EmailBackend',
     },
 }
+
+# Email settings for development/testing
+DEFAULT_FROM_EMAIL = "tracker@example.com"
