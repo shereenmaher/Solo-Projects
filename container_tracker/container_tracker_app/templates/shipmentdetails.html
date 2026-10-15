@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>{{ shipment.name }} | Shipment Tracker</title>
+    <title>{{ shipment.name }} | Where's My Box?</title>
 
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
@@ -257,12 +258,230 @@
         </section>
 
 
+        <!-- DOCUMENT READINESS -->
+        <section class="documents-card">
+
+            <div class="documents-header">
+
+                <div>
+                    <p class="section-label">
+                        DOCUMENTS
+                    </p>
+
+                    <h2>
+                        Document Readiness
+                    </h2>
+                </div>
+
+                <div class="readiness-percentage">
+                    {{ documents.readiness_percentage }}%
+                </div>
+
+            </div>
+
+
+            <!-- READINESS BAR -->
+            <div class="readiness-bar">
+
+                <div
+                    class="readiness-fill"
+                    style="width: {{ documents.readiness_percentage }}%;">
+                </div>
+
+            </div>
+
+
+            <!-- DOCUMENT LIST -->
+            <div class="document-list">
+
+
+                <!-- COMMERCIAL INVOICE -->
+                <div class="document-item">
+
+                    {% if documents.commercial_invoice %}
+
+                        <span class="document-complete">
+                            ✓
+                        </span>
+
+                    {% else %}
+
+                        <span class="document-missing">
+                            ✕
+                        </span>
+
+                    {% endif %}
+
+                    <span>
+                        Commercial Invoice
+                    </span>
+
+                </div>
+
+
+                <!-- PACKING LIST -->
+                <div class="document-item">
+
+                    {% if documents.packing_list %}
+
+                        <span class="document-complete">
+                            ✓
+                        </span>
+
+                    {% else %}
+
+                        <span class="document-missing">
+                            ✕
+                        </span>
+
+                    {% endif %}
+
+                    <span>
+                        Packing List
+                    </span>
+
+                </div>
+
+
+                <!-- BILL OF LADING -->
+                <div class="document-item">
+
+                    {% if documents.bill_of_lading %}
+
+                        <span class="document-complete">
+                            ✓
+                        </span>
+
+                    {% else %}
+
+                        <span class="document-missing">
+                            ✕
+                        </span>
+
+                    {% endif %}
+
+                    <span>
+                        Bill of Lading
+                    </span>
+
+                </div>
+
+
+                <!-- CERTIFICATE OF ORIGIN -->
+                <div class="document-item">
+
+                    {% if documents.certificate_of_origin %}
+
+                        <span class="document-complete">
+                            ✓
+                        </span>
+
+                    {% else %}
+
+                        <span class="document-missing">
+                            ✕
+                        </span>
+
+                    {% endif %}
+
+                    <span>
+                        Certificate of Origin
+                    </span>
+
+                </div>
+
+
+                <!-- INSURANCE -->
+                <div class="document-item">
+
+                    {% if documents.insurance %}
+
+                        <span class="document-complete">
+                            ✓
+                        </span>
+
+                    {% else %}
+
+                        <span class="document-missing">
+                            ✕
+                        </span>
+
+                    {% endif %}
+
+                    <span>
+                        Insurance
+                    </span>
+
+                </div>
+
+
+                <!-- CUSTOMS DECLARATION -->
+                <div class="document-item">
+
+                    {% if documents.customs_declaration %}
+
+                        <span class="document-complete">
+                            ✓
+                        </span>
+
+                    {% else %}
+
+                        <span class="document-missing">
+                            ✕
+                        </span>
+
+                    {% endif %}
+
+                    <span>
+                        Customs Declaration
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- DOCUMENT STATUS -->
+            {% if documents.missing_count > 0 %}
+
+                <div class="documents-warning">
+
+                    ⚠ {{ documents.missing_count }}
+                    document{{ documents.missing_count|pluralize }}
+                    still missing
+
+                </div>
+
+            {% else %}
+
+                <div class="documents-ready">
+
+                    ✓ All required documents are ready
+
+                </div>
+
+            {% endif %}
+
+
+            <!-- MANAGE DOCUMENTS -->
+            <a
+                href="{% url 'edit_shipment_documents' shipment.id %}"
+                class="btn-manage-documents"
+            >
+                Manage Documents
+            </a>
+
+        </section>
+
+
         <!-- TRACKING ACTIONS -->
         <section class="card tracking-actions-card">
 
             <div>
 
-                <h2>Tracking Information</h2>
+                <h2>
+                    Tracking Information
+                </h2>
 
                 <p>
                     View the shipment journey or request the latest
@@ -306,4 +525,5 @@
     </main>
 
 </body>
+
 </html>

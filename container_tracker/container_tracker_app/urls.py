@@ -14,6 +14,6 @@ urlpatterns = [
     
     path('shipments/<int:shipment_id>/refresh',views.refresh_shipment,name='refresh_shipment'),
 
-
+    path('shipments/<int:shipment_id>/documents',views.edit_shipment_documents,name='edit_shipment_documents'),
     path('logout', views.logout, name='logout'),
 ]

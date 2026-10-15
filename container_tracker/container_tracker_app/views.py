@@ -108,10 +108,11 @@ def view_shipment(request,shipment_id):
         user=User.objects.get(id=request.session['user_id'])
 
         shipment=Shipment.objects.get(id=shipment_id)
-
+        documents, created = ShipmentDocuments.objects.get_or_create(shipment=shipment)
         context={
             "user":user,
-            "shipment":shipment
+            "shipment":shipment,
+            "documents": documents
         }
         return render(request,"shipmentdetails.html",context)
 
@@ -205,6 +206,62 @@ def refresh_shipment(request, shipment_id):
         return redirect("view_shipment", shipment_id=shipment.id)
 
     return redirect("view_shipment", shipment_id=shipment.id)
+
+#shipment documents
+def edit_shipment_documents(request, shipment_id):
+
+    if "user_id" not in request.session:
+        return redirect("/")
+
+    shipment = Shipment.objects.get(id=shipment_id)
+
+    documents, created = ShipmentDocuments.objects.get_or_create(
+        shipment=shipment
+    )
+
+    if request.method == "POST":
+
+        documents.commercial_invoice = (
+            "commercial_invoice" in request.POST
+        )
+
+        documents.packing_list = (
+            "packing_list" in request.POST
+        )
+
+        documents.bill_of_lading = (
+            "bill_of_lading" in request.POST
+        )
+
+        documents.certificate_of_origin = (
+            "certificate_of_origin" in request.POST
+        )
+
+        documents.insurance = (
+            "insurance" in request.POST
+        )
+
+        documents.customs_declaration = (
+            "customs_declaration" in request.POST
+        )
+
+        documents.save()
+
+        return redirect(
+            "view_shipment",
+            shipment_id=shipment.id
+        )
+
+    context = {
+        "shipment": shipment,
+        "documents": documents
+    }
+
+    return render(
+        request,
+        "edit_shipment_documents.html",
+        context
+    )
 
 #logout view
 def logout(request):

@@ -1,0 +1,332 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Documents | {{ shipment.name }} | Where's My Box?</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+
+        <div class="nav-container">
+
+            <a href="{% url 'dashboard' %}" class="brand">
+
+                <div class="brand-icon">
+                    ST
+                </div>
+
+                <div>
+                    <span class="brand-name">
+                        Where's My Box?
+                    </span>
+
+                    <span class="brand-subtitle">
+                        Container Tracking
+                    </span>
+                </div>
+
+            </a>
+
+
+            <div class="nav-actions">
+
+                <a
+                    href="{% url 'dashboard' %}"
+                    class="btn btn-outline"
+                >
+                    Dashboard
+                </a>
+
+                <a
+                    href="{% url 'logout' %}"
+                    class="btn btn-outline"
+                >
+                    Logout
+                </a>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+
+    <!-- MAIN -->
+    <main class="page-container">
+
+        <a
+            href="{% url 'view_shipment' shipment.id %}"
+            class="back-link"
+        >
+            ← Back to Shipment
+        </a>
+
+
+        <!-- PAGE HEADER -->
+        <section class="documents-page-header">
+
+            <p class="page-label">
+                SHIPMENT DOCUMENTS
+            </p>
+
+            <h1>
+                {{ shipment.name }}
+            </h1>
+
+            <p>
+                Container {{ shipment.number }}
+            </p>
+
+        </section>
+
+
+        <!-- CHECKLIST CARD -->
+        <section class="documents-edit-card">
+
+            <div class="documents-edit-header">
+
+                <div>
+                    <h2>
+                        Required Documents
+                    </h2>
+
+                    <p>
+                        Mark each document once it has been received
+                        and verified.
+                    </p>
+                </div>
+
+
+                <div class="readiness-percentage">
+                    {{ documents.readiness_percentage }}%
+                </div>
+
+            </div>
+
+
+            <!-- PROGRESS -->
+            <div class="readiness-bar">
+
+                <div
+                    class="readiness-fill"
+                    style="width: {{ documents.readiness_percentage }}%;">
+                </div>
+
+            </div>
+
+
+            <!-- FORM -->
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <div class="documents-checklist">
+
+
+                    <!-- COMMERCIAL INVOICE -->
+                    <label class="document-checkbox">
+
+                        <input
+                            type="checkbox"
+                            name="commercial_invoice"
+
+                            {% if documents.commercial_invoice %}
+                                checked
+                            {% endif %}
+                        >
+
+                        <span class="document-checkbox-content">
+
+                            <strong>
+                                Commercial Invoice
+                            </strong>
+
+                            <small>
+                                Supplier invoice showing goods,
+                                quantity and value.
+                            </small>
+
+                        </span>
+
+                    </label>
+
+
+                    <!-- PACKING LIST -->
+                    <label class="document-checkbox">
+
+                        <input
+                            type="checkbox"
+                            name="packing_list"
+
+                            {% if documents.packing_list %}
+                                checked
+                            {% endif %}
+                        >
+
+                        <span class="document-checkbox-content">
+
+                            <strong>
+                                Packing List
+                            </strong>
+
+                            <small>
+                                Detailed list of packages and
+                                shipment contents.
+                            </small>
+
+                        </span>
+
+                    </label>
+
+
+                    <!-- BILL OF LADING -->
+                    <label class="document-checkbox">
+
+                        <input
+                            type="checkbox"
+                            name="bill_of_lading"
+
+                            {% if documents.bill_of_lading %}
+                                checked
+                            {% endif %}
+                        >
+
+                        <span class="document-checkbox-content">
+
+                            <strong>
+                                Bill of Lading
+                            </strong>
+
+                            <small>
+                                Transport document issued for the
+                                ocean shipment.
+                            </small>
+
+                        </span>
+
+                    </label>
+
+
+                    <!-- CERTIFICATE OF ORIGIN -->
+                    <label class="document-checkbox">
+
+                        <input
+                            type="checkbox"
+                            name="certificate_of_origin"
+
+                            {% if documents.certificate_of_origin %}
+                                checked
+                            {% endif %}
+                        >
+
+                        <span class="document-checkbox-content">
+
+                            <strong>
+                                Certificate of Origin
+                            </strong>
+
+                            <small>
+                                Confirms the country where the goods
+                                originated.
+                            </small>
+
+                        </span>
+
+                    </label>
+
+
+                    <!-- INSURANCE -->
+                    <label class="document-checkbox">
+
+                        <input
+                            type="checkbox"
+                            name="insurance"
+
+                            {% if documents.insurance %}
+                                checked
+                            {% endif %}
+                        >
+
+                        <span class="document-checkbox-content">
+
+                            <strong>
+                                Insurance
+                            </strong>
+
+                            <small>
+                                Shipment insurance documentation.
+                            </small>
+
+                        </span>
+
+                    </label>
+
+
+                    <!-- CUSTOMS DECLARATION -->
+                    <label class="document-checkbox">
+
+                        <input
+                            type="checkbox"
+                            name="customs_declaration"
+
+                            {% if documents.customs_declaration %}
+                                checked
+                            {% endif %}
+                        >
+
+                        <span class="document-checkbox-content">
+
+                            <strong>
+                                Customs Declaration
+                            </strong>
+
+                            <small>
+                                Required customs clearance
+                                documentation.
+                            </small>
+
+                        </span>
+
+                    </label>
+
+                </div>
+
+
+                <!-- ACTIONS -->
+                <div class="documents-form-actions">
+
+                    <a
+                        href="{% url 'view_shipment' shipment.id %}"
+                        class="btn btn-secondary"
+                    >
+                        Cancel
+                    </a>
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary"
+                    >
+                        Save Documents
+                    </button>
+
+                </div>
+
+            </form>
+
+        </section>
+
+    </main>
+
+</body>
+
+</html>

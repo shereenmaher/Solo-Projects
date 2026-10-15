@@ -478,6 +478,7 @@ class shipmentManager(models.Manager):
             number=data["number"],
             user=user
         )
+        ShipmentDocuments.objects.create(shipment=shipment)
 
         api_data = fetch_container_data(shipment.number)
 
@@ -492,6 +493,15 @@ class shipmentManager(models.Manager):
         shipment.name=data['name']
         shipment.number=data['number']
         shipment.save()
+
+    def days_until_arrival(self):
+
+        if not self.eta:
+            return None
+
+        difference = self.eta - timezone.now()
+
+        return difference.days
 
     
 class User(models.Model):
@@ -533,3 +543,43 @@ class shipmentHistory(models.Model):
     old_value = models.CharField(max_length=255, blank=True)
     new_value = models.CharField(max_length=255, blank=True)
     created_at=models.DateField(auto_now_add=True)
+
+class ShipmentDocuments(models.Model):
+
+    commercial_invoice = models.BooleanField(default=False)
+    packing_list = models.BooleanField(default=False)
+    bill_of_lading = models.BooleanField(default=False)
+    certificate_of_origin = models.BooleanField(default=False)
+    insurance = models.BooleanField(default=False)
+    customs_declaration = models.BooleanField(default=False)
+    shipment = models.OneToOneField(Shipment,related_name="documents",on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def readiness_percentage(self):
+
+        documents = [
+            self.commercial_invoice,
+            self.packing_list,
+            self.bill_of_lading,
+            self.certificate_of_origin,
+            self.insurance,
+            self.customs_declaration
+        ]
+
+        completed = documents.count(True)
+
+        return round((completed / len(documents)) * 100)
+
+    def missing_count(self):
+
+        documents = [
+            self.commercial_invoice,
+            self.packing_list,
+            self.bill_of_lading,
+            self.certificate_of_origin,
+            self.insurance,
+            self.customs_declaration
+        ]
+
+        return documents.count(False)
