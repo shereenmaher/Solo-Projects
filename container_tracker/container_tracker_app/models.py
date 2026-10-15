@@ -46,6 +46,58 @@ def fetch_container_data(number):
 
     return None
 
+def fetch_tracked_shipment(number):
+
+    api_key = os.environ.get("TRAQO_API_KEY")
+
+    if not api_key:
+        print("Traqo API key is missing")
+        return None
+
+    url = (
+        f"https://traqocontainer.com/api/v1/"
+        f"shipments/{number}?include=full"
+    )
+
+    headers = {
+        "Authorization": f"Bearer {api_key}"
+    }
+
+    try:
+        response = requests.get(
+            url,
+            headers=headers,
+            timeout=30
+        )
+
+        response.raise_for_status()
+
+    except requests.RequestException as error:
+        print("Traqo API error:", error)
+        return None
+
+    result = response.json()
+
+    if not result.get("success"):
+        return None
+
+    data = result.get("data")
+
+    if not data:
+        return None
+
+    # include=full puts the stored tracking tables
+    # inside "document"
+    document = data.get("document")
+
+    if document:
+        # Keep the current summary values from Traqo
+        # but also give save_tracking_data() the full tables
+        data["events_table"] = document.get("events_table", [])
+        data["vessels_table"] = document.get("vessels_table", [])
+
+    return data
+
 #handles Traqo's date format
 def parse_api_datetime(value):
     if not value:
@@ -184,6 +236,7 @@ class shipmentManager(models.Manager):
         old_ata = shipment.ata
         was_checked = shipment.lastchecked is not None
 
+
         # 2. Update the current shipment information
         shipment.status = api_data.get("status") or "Unknown"
         shipment.origin = api_data.get("origin") or ""
@@ -192,12 +245,19 @@ class shipmentManager(models.Manager):
         eta = parse_api_datetime(api_data.get("eta"))
         ata = parse_api_datetime(api_data.get("ata"))
 
+
+        # ETA can change, so update it whenever Traqo gives us one
         if eta:
             shipment.eta = eta
 
-        if ata:
+
+        # ATA should only be saved ONCE
+        # If we already have an ATA, do not overwrite it
+        if ata and not shipment.ata:
             shipment.ata = ata
 
+
+        # Get vessel information
         vessels = api_data.get("vessels_table", [])
 
         current_vessel = next(
@@ -211,13 +271,19 @@ class shipmentManager(models.Manager):
         if current_vessel:
             shipment.vessel = current_vessel
 
+
+        # Update last checked time
         shipment.lastchecked = timezone.now()
+
         shipment.save()
+
 
         # 3. Save changes detected by our tracker
         if was_checked:
 
+            # STATUS CHANGE
             if old_status != shipment.status:
+
                 shipment.history.create(
                     status="Status Change",
                     description=f"Status changed from {old_status} → {shipment.status}",
@@ -228,32 +294,65 @@ class shipmentManager(models.Manager):
                     is_actual=True
                 )
 
+
+            # ETA CHANGE
             if old_eta != shipment.eta:
+
+                if old_eta:
+                    old_eta_display = timezone.localtime(
+                        old_eta
+                    ).strftime("%b %d, %Y %H:00")
+                else:
+                    old_eta_display = "Unknown"
+
+
+                if shipment.eta:
+                    new_eta_display = timezone.localtime(
+                        shipment.eta
+                    ).strftime("%b %d, %Y %H:00")
+                else:
+                    new_eta_display = "Unknown"
+
+
                 shipment.history.create(
                     status="ETA Change",
-                    description=f"ETA changed from {old_eta or 'Unknown'} → {shipment.eta or 'Unknown'}",
+                    description=f"ETA changed from {old_eta_display} → {new_eta_display}",
                     change_type="ETA",
-                    old_value=str(old_eta) if old_eta else "Unknown",
-                    new_value=str(shipment.eta) if shipment.eta else "Unknown",
+                    old_value=old_eta_display,
+                    new_value=new_eta_display,
                     event_date=timezone.now(),
                     is_actual=True
                 )
 
+
+            # ACTUAL ARRIVAL
+            # This will only happen once because ATA is never overwritten
             if old_ata != shipment.ata:
+
+                if shipment.ata:
+                    ata_display = timezone.localtime(
+                        shipment.ata
+                    ).strftime("%b %d, %Y %H:00")
+                else:
+                    ata_display = "Unknown"
+
+
                 shipment.history.create(
-                    status="ATA Change",
-                    description=f"ATA changed from {old_ata or 'Unknown'} → {shipment.ata or 'Unknown'}",
+                    status="Actual Arrival",
+                    description=f"Actual arrival recorded: {ata_display}",
                     change_type="ATA",
-                    old_value=str(old_ata) if old_ata else "Unknown",
-                    new_value=str(shipment.ata) if shipment.ata else "Unknown",
+                    old_value="Not arrived",
+                    new_value=ata_display,
                     event_date=timezone.now(),
                     is_actual=True
                 )
+
 
         # 4. Save Traqo shipment events
         events = api_data.get("events_table", [])
 
         for event in events:
+
             event_id = event.get("event_id")
 
             if event_id is None:
@@ -261,17 +360,22 @@ class shipmentManager(models.Manager):
 
             event_id = str(event_id)
 
+
+            # Check if this Traqo event is already saved
             already_saved = shipment.history.filter(
                 api_event_id=event_id
             ).exists()
 
+
             if not already_saved:
+
                 event_status = (
                     event.get("status_description")
                     or event.get("description")
                     or event.get("status")
                     or "Update"
                 )
+
 
                 shipment.history.create(
                     api_event_id=event_id,
@@ -285,42 +389,86 @@ class shipmentManager(models.Manager):
                     is_actual=bool(event.get("is_actual"))
                 )
 
+
         # 5. Send email if Status, ETA, or ATA changed
         if was_checked and (
             old_status != shipment.status
             or old_eta != shipment.eta
             or old_ata != shipment.ata
         ):
+
+            # Format old ETA
+            if old_eta:
+                old_eta_email = timezone.localtime(
+                    old_eta
+                ).strftime("%b %d, %Y %H:00")
+            else:
+                old_eta_email = "Unknown"
+
+
+            # Format current ETA
+            if shipment.eta:
+                new_eta_email = timezone.localtime(
+                    shipment.eta
+                ).strftime("%b %d, %Y %H:00")
+            else:
+                new_eta_email = "Unknown"
+
+
+            # Format old ATA
+            if old_ata:
+                old_ata_email = timezone.localtime(
+                    old_ata
+                ).strftime("%b %d, %Y %H:00")
+            else:
+                old_ata_email = "Not arrived"
+
+
+            # Format current ATA
+            if shipment.ata:
+                new_ata_email = timezone.localtime(
+                    shipment.ata
+                ).strftime("%b %d, %Y %H:00")
+            else:
+                new_ata_email = "Not arrived"
+
+
             send_mail(
                 subject=f"Shipment update: {shipment.name}",
+
                 message=(
                     f"Hello {shipment.user.firstname},\n\n"
+
                     f"Your shipment '{shipment.name}' has been updated.\n"
                     f"Container: {shipment.number}\n\n"
 
                     f"Previous status: {old_status}\n"
                     f"Current status: {shipment.status}\n\n"
 
-                    f"Previous ETA: {old_eta or 'Unknown'}\n"
-                    f"Current ETA: {shipment.eta or 'Unknown'}\n\n"
+                    f"Previous ETA: {old_eta_email}\n"
+                    f"Current ETA: {new_eta_email}\n\n"
 
-                    f"Previous ATA: {old_ata or 'Unknown'}\n"
-                    f"Current ATA: {shipment.ata or 'Unknown'}\n"
+                    f"Previous ATA: {old_ata_email}\n"
+                    f"Current ATA: {new_ata_email}\n"
                 ),
+
                 from_email=settings.DEFAULT_FROM_EMAIL,
                 recipient_list=[shipment.user.email],
                 fail_silently=True
             )
 
+
         return shipment
     
     def refresh_shipment(self, shipment):
-        api_data = fetch_container_data(shipment.number)
+
+        api_data = fetch_tracked_shipment(shipment.number)
 
         if not api_data:
             return False
 
         self.save_tracking_data(shipment, api_data)
+
         return True
 
 

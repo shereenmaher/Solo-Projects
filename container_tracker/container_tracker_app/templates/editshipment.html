@@ -1,54 +1,185 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Shipment</title>
+
+    <title>Edit {{ shipment.name }} | Shipment Tracker</title>
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
+
 <body>
 
-    <h2>Welcome {{ user.firstname }}</h2>
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="nav-container">
 
-    <a href="{% url 'dashboard' %}">Dashboard</a>
-    <a href="{% url 'logout' %}">Logout</a>
+            <a href="{% url 'dashboard' %}" class="brand">
+                <div class="brand-icon">ST</div>
 
-    <h2>Edit Shipment</h2>
+                <div>
+                    <span class="brand-name">Where's My Box?</span>
+                    <span class="brand-subtitle">Container Tracking</span>
+                </div>
+            </a>
 
-    <form action="{% url 'edit_shipment' shipment.id %}" method="POST">
-        {% csrf_token %}
+            <div class="nav-actions">
 
-        <label for="name">Shipment Name:</label>
-        <input
-            type="text"
-            id="name"
-            name="name"
-            value="{{ shipment.name }}"
-        >
+                <span class="welcome-user">
+                    Hi, {{ user.firstname }}
+                </span>
 
-        {% if errors.nameerror %}
-            <p>{{ errors.nameerror }}</p>
-        {% endif %}
+                <a href="{% url 'dashboard' %}" class="btn btn-outline">
+                    Dashboard
+                </a>
 
-        <br>
+                <a href="{% url 'logout' %}" class="btn btn-outline">
+                    Logout
+                </a>
 
-        <label for="number">Container Number:</label>
-        <input
-            type="text"
-            id="number"
-            name="number"
-            value="{{ shipment.number }}"
-        >
+            </div>
 
-        {% if errors.numbererror %}
-            <p>{{ errors.numbererror }}</p>
-        {% endif %}
+        </div>
+    </nav>
 
-        <br>
 
-        <button type="submit">Save Changes</button>
+    <!-- MAIN -->
+    <main class="page-container form-page">
 
-    </form>
+        <!-- BACK -->
+        <a href="{% url 'dashboard' %}" class="back-link">
+            ← Back to Dashboard
+        </a>
+
+
+        <!-- HEADER -->
+        <section class="form-page-header">
+
+            <p class="page-label">
+                EDIT SHIPMENT
+            </p>
+
+            <h1>{{ shipment.name }}</h1>
+
+            <p class="page-description">
+                Update the shipment name or container number.
+            </p>
+
+        </section>
+
+
+        <!-- FORM CARD -->
+        <section class="card shipment-form-card">
+
+            <div class="form-card-header">
+
+                <h2>Shipment Information</h2>
+
+                <p>
+                    Make your changes below and save when you're finished.
+                </p>
+
+            </div>
+
+
+            <form
+                action="{% url 'edit_shipment' shipment.id %}"
+                method="POST"
+                class="shipment-form"
+            >
+
+                {% csrf_token %}
+
+
+                <!-- SHIPMENT NAME -->
+                <div class="form-group">
+
+                    <label for="name">
+                        Shipment Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        class="form-input"
+                        value="{{ shipment.name }}"
+                    >
+
+                    <span class="form-help">
+                        Use a name that helps you identify this shipment.
+                    </span>
+
+
+                    {% if errors.nameerror %}
+
+                        <p class="form-error">
+                            {{ errors.nameerror }}
+                        </p>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- CONTAINER NUMBER -->
+                <div class="form-group">
+
+                    <label for="number">
+                        Container Number
+                    </label>
+
+                    <input
+                        type="text"
+                        id="number"
+                        name="number"
+                        class="form-input container-input"
+                        maxlength="11"
+                        value="{{ shipment.number }}"
+                    >
+
+                    <span class="form-help">
+                        Container numbers contain 4 letters followed by 7 numbers.
+                    </span>
+
+
+                    {% if errors.numbererror %}
+
+                        <p class="form-error">
+                            {{ errors.numbererror }}
+                        </p>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- ACTIONS -->
+                <div class="form-actions">
+
+                    <a
+                        href="{% url 'view_shipment' shipment.id %}"
+                        class="btn btn-cancel"
+                    >
+                        Cancel
+                    </a>
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary"
+                    >
+                        Save Changes
+                    </button>
+
+                </div>
+
+            </form>
+
+        </section>
+
+    </main>
 
 </body>
 </html>

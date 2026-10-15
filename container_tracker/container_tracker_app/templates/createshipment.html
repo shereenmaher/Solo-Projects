@@ -1,48 +1,189 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Shipment</title>
+
+    <title>Add Shipment | Shipment Tracker</title>
+
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
+
 <body>
 
-    <h2>Welcome {{ user.firstname }}</h2>
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="nav-container">
 
-    <a href="{% url 'dashboard' %}">Dashboard</a>
-    <a href="{% url 'logout' %}">Logout</a>
+            <a href="{% url 'dashboard' %}" class="brand">
+                <div class="brand-icon">WB</div>
 
-    <h2>Create Shipment</h2>
+                <div>
+                    <span class="brand-name">Where's My Box?</span>
+                    <span class="brand-subtitle">Container Tracking</span>
+                </div>
+            </a>
 
-    <form action="{% url 'create_shipment' %}" method="POST">
-        {% csrf_token %}
+            <div class="nav-actions">
 
-        <label for="name">Shipment Name:</label>
-        <input type="text" id="name" name="name"
-               value="{{ request.POST.name|default:'' }}">
+                <span class="welcome-user">
+                    Hi, {{ user.firstname }}
+                </span>
 
-        {% if errors.nameerror %}
-            <p>{{ errors.nameerror }}</p>
-        {% endif %}
+                <a href="{% url 'dashboard' %}" class="btn btn-outline">
+                    Dashboard
+                </a>
 
-        <br>
+                <a href="{% url 'logout' %}" class="btn btn-outline">
+                    Logout
+                </a>
 
-        <label for="number">Container Number:</label>
-        <input type="text" id="number" name="number"
-               value="{{ request.POST.number|default:'' }}">
+            </div>
 
-        {% if errors.numbererror %}
-            <p>{{ errors.numbererror }}</p>
-        {% endif %}
+        </div>
+    </nav>
 
-        <br>
 
-        <button type="submit">Create Shipment</button>
+    <!-- MAIN -->
+    <main class="page-container form-page">
 
-    </form>
+        <!-- BACK -->
+        <a href="{% url 'dashboard' %}" class="back-link">
+            ← Back to Dashboard
+        </a>
+
+
+        <!-- HEADER -->
+        <section class="form-page-header">
+
+            <p class="page-label">
+                NEW SHIPMENT
+            </p>
+
+            <h1>Add a Shipment</h1>
+
+            <p class="page-description">
+                Add a container to your tracker to start monitoring
+                its latest shipping information.
+            </p>
+
+        </section>
+
+
+        <!-- FORM CARD -->
+        <section class="card shipment-form-card">
+
+            <div class="form-card-header">
+
+                <h2>Shipment Information</h2>
+
+                <p>
+                    Enter a name for your shipment and its container number.
+                </p>
+
+            </div>
+
+
+            <form
+                action="{% url 'create_shipment' %}"
+                method="POST"
+                class="shipment-form"
+            >
+
+                {% csrf_token %}
+
+
+                <!-- SHIPMENT NAME -->
+                <div class="form-group">
+
+                    <label for="name">
+                        Shipment Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        class="form-input"
+                        placeholder="Example: Greek Rice 3X40"
+                        value="{{ request.POST.name|default:'' }}"
+                    >
+
+                    <span class="form-help">
+                        Give the shipment a name that will help you identify it.
+                    </span>
+
+
+                    {% if errors.nameerror %}
+
+                        <p class="form-error">
+                            {{ errors.nameerror }}
+                        </p>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- CONTAINER NUMBER -->
+                <div class="form-group">
+
+                    <label for="number">
+                        Container Number
+                    </label>
+
+                    <input
+                        type="text"
+                        id="number"
+                        name="number"
+                        class="form-input container-input"
+                        placeholder="Example: MSDU5216800"
+                        maxlength="11"
+                        value="{{ request.POST.number|default:'' }}"
+                    >
+
+                    <span class="form-help">
+                        Enter the 11-character container number:
+                        4 letters followed by 7 numbers.
+                    </span>
+
+
+                    {% if errors.numbererror %}
+
+                        <p class="form-error">
+                            {{ errors.numbererror }}
+                        </p>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- ACTIONS -->
+                <div class="form-actions">
+
+                    <a
+                        href="{% url 'dashboard' %}"
+                        class="btn btn-cancel"
+                    >
+                        Cancel
+                    </a>
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary"
+                    >
+                        + Add Shipment
+                    </button>
+
+                </div>
+
+            </form>
+
+        </section>
+
+    </main>
 
 </body>
 </html>

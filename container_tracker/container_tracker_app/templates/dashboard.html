@@ -1,68 +1,275 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    {% load static %}
 
+    <title>Shipment Tracker | Dashboard</title>
+
+    {% load static %}
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
+
 <body>
 
-    <h2>Welcome to your Tracker, {{ user.firstname }}</h2>
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="nav-container">
 
-    <a href="{% url 'create_shipment' %}">+ Shipment</a>
-    <a href="{% url 'logout' %}">Logout</a>
+            <a href="{% url 'dashboard' %}" class="brand">
+                <div class="brand-icon">ST</div>
 
-    <h2>All Shipments</h2>
+                <div>
+                    <span class="brand-name">Where's My Box?</span>
+                    <span class="brand-subtitle">Container Tracking</span>
+                </div>
+            </a>
 
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Shipment Name</th>
-                <th>Container Number</th>
-                <th>Status</th>
-                <th>ETA</th>
-                <th>Last Checked</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
+            <div class="nav-actions">
+                <span class="welcome-user">
+                    Hi, {{ user.firstname }}
+                </span>
 
-        <tbody>
-            {% for shipment in shipments %}
-            <tr>
-                <td>
-                    <a href="{% url 'view_shipment' shipment.id %}">
-                        {{ shipment.name }}
-                    </a>
-                </td>
+                <a href="{% url 'create_shipment' %}" class="btn btn-primary">
+                    + Add Shipment
+                </a>
 
-                <td>{{ shipment.number }}</td>
-                <td>{{ shipment.status }}</td>
-                <td>{{ shipment.eta|default:"Not available" }}</td>
-                <td>{{ shipment.lastchecked|default:"Not checked yet" }}</td>
+                <a href="{% url 'logout' %}" class="btn btn-outline">
+                    Logout
+                </a>
+            </div>
 
-                <td>
-                    {% if shipment.user_id == user.id %}
-                        <a href="{% url 'edit_shipment' shipment.id %}">
-                            Edit
-                        </a>
-                    {% else %}
-                        <a href="{% url 'view_shipment' shipment.id %}">
-                            Details
-                        </a>
-                    {% endif %}
-                </td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="6">No shipments have been added yet.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+        </div>
+    </nav>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="page-container">
+
+        <!-- PAGE HEADER -->
+        <section class="page-header">
+
+            <div>
+                <p class="page-label">OVERVIEW</p>
+                <h1>Your Shipments</h1>
+
+                <p class="page-description">
+                    Track your containers and monitor their latest shipping information.
+                </p>
+            </div>
+
+        </section>
+
+
+        <!-- SHIPMENT TABLE CARD -->
+        <section class="card">
+
+            <div class="card-header">
+                <div>
+                    <h2>All Shipments</h2>
+                    <p>Latest tracking information for your containers</p>
+                </div>
+            </div>
+
+
+            <div class="table-wrapper">
+
+                <table class="shipment-table">
+
+                    <thead>
+                        <tr>
+                            <th>Shipment</th>
+                            <th>Container Number</th>
+                            <th>Status</th>
+                            <th>Arrival</th>
+                            <th>Last Checked</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {% for shipment in shipments %}
+
+                        <tr>
+
+                            <!-- SHIPMENT NAME -->
+                            <td data-label="Shipment">
+                                <a
+                                    href="{% url 'view_shipment' shipment.id %}"
+                                    class="shipment-name"
+                                >
+                                    {{ shipment.name }}
+                                </a>
+                            </td>
+
+
+                            <!-- CONTAINER -->
+                            <td data-label="Container Number">
+                                <span class="container-number">
+                                    {{ shipment.number }}
+                                </span>
+                            </td>
+
+
+                            <!-- STATUS -->
+                            <td data-label="Status">
+
+                                {% if shipment.status == "IN_TRANSIT" %}
+
+                                    <span class="status status-transit">
+                                        In Transit
+                                    </span>
+
+                                {% elif shipment.status == "ARRIVED" %}
+
+                                    <span class="status status-arrived">
+                                        Arrived
+                                    </span>
+
+                                {% elif shipment.status == "DELIVERED" %}
+
+                                    <span class="status status-delivered">
+                                        Delivered
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="status status-default">
+                                        {{ shipment.status }}
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <!-- ARRIVAL -->
+                            <td data-label="Arrival">
+
+                                {% if shipment.ata %}
+
+                                    <div class="date-info">
+                                        <span class="date-label arrived-label">
+                                            ARRIVED
+                                        </span>
+
+                                        <span>
+                                            {{ shipment.ata|date:"M d, Y" }}
+                                        </span>
+                                    </div>
+
+                                {% elif shipment.eta %}
+
+                                    <div class="date-info">
+                                        <span class="date-label">
+                                            ETA
+                                        </span>
+
+                                        <span>
+                                            {{ shipment.eta|date:"M d, Y" }}
+                                        </span>
+                                    </div>
+
+                                {% else %}
+
+                                    <span class="muted">
+                                        Not available
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <!-- LAST CHECKED -->
+                            <td data-label="Last Checked">
+
+                                {% if shipment.lastchecked %}
+
+                                    <span class="last-checked">
+                                        {{ shipment.lastchecked|date:"M d, Y H:i" }}
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="muted">
+                                        Not checked yet
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <!-- ACTIONS -->
+                            <td data-label="Actions">
+
+                                <div class="table-actions">
+
+                                    <a
+                                        href="{% url 'view_shipment' shipment.id %}"
+                                        class="action-link"
+                                    >
+                                        Details
+                                    </a>
+
+                                    {% if shipment.user_id == user.id %}
+
+                                        <a
+                                            href="{% url 'edit_shipment' shipment.id %}"
+                                            class="action-link edit-link"
+                                        >
+                                            Edit
+                                        </a>
+
+                                    {% endif %}
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+
+                        {% empty %}
+
+                        <tr>
+                            <td colspan="6">
+
+                                <div class="empty-state">
+
+                                    <div class="empty-icon">+</div>
+
+                                    <h3>No shipments yet</h3>
+
+                                    <p>
+                                        Add your first container to start tracking it.
+                                    </p>
+
+                                    <a
+                                        href="{% url 'create_shipment' %}"
+                                        class="btn btn-primary"
+                                    >
+                                        + Add Shipment
+                                    </a>
+
+                                </div>
+
+                            </td>
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
 
 </body>
 </html>

@@ -1,0 +1,1747 @@
+/* ================================
+   GLOBAL
+================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #f4f7fb;
+    color: #172033;
+    line-height: 1.5;
+}
+
+a {
+    text-decoration: none;
+}
+
+
+/* ================================
+   NAVBAR
+================================ */
+
+.navbar {
+    background-color: #0b1f3a;
+    padding: 16px 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.nav-container {
+    width: 92%;
+    max-width: 1250px;
+    margin: auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: white;
+}
+
+.brand-icon {
+    width: 44px;
+    height: 44px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: #18a999;
+    color: white;
+
+    border-radius: 10px;
+    font-weight: bold;
+}
+
+.brand-name {
+    display: block;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.brand-subtitle {
+    display: block;
+    font-size: 11px;
+    color: #aebbd0;
+    margin-top: 2px;
+}
+
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.welcome-user {
+    color: #dce5f2;
+    margin-right: 8px;
+}
+
+
+/* ================================
+   BUTTONS
+================================ */
+
+.btn {
+    display: inline-block;
+    padding: 10px 18px;
+
+    border-radius: 7px;
+    border: none;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.btn-primary {
+    background-color: #18a999;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #12877b;
+}
+
+.btn-outline {
+    color: white;
+    border: 1px solid #53667f;
+}
+
+.btn-outline:hover {
+    background-color: #1b3555;
+}
+
+
+/* ================================
+   PAGE
+================================ */
+
+.page-container {
+    width: 92%;
+    max-width: 1250px;
+    margin: 40px auto;
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+
+    margin-bottom: 25px;
+}
+
+.page-label {
+    color: #18a999;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+
+    margin-bottom: 5px;
+}
+
+.page-header h1 {
+    font-size: 30px;
+    color: #10213a;
+}
+
+.page-description {
+    color: #6c788b;
+    margin-top: 6px;
+}
+
+
+/* ================================
+   CARD
+================================ */
+
+.card {
+    background-color: white;
+
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+
+    box-shadow: 0 5px 18px rgba(21, 38, 63, 0.06);
+
+    overflow: hidden;
+}
+
+.card-header {
+    padding: 22px 25px;
+    border-bottom: 1px solid #e8edf3;
+}
+
+.card-header h2 {
+    font-size: 19px;
+}
+
+.card-header p {
+    color: #7a8698;
+    font-size: 13px;
+    margin-top: 3px;
+}
+
+
+/* ================================
+   TABLE
+================================ */
+
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.shipment-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.shipment-table th {
+    background-color: #f8fafc;
+
+    color: #6b778c;
+
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+
+    text-align: left;
+
+    padding: 14px 18px;
+
+    border-bottom: 1px solid #e5eaf0;
+}
+
+.shipment-table td {
+    padding: 18px;
+
+    border-bottom: 1px solid #edf0f4;
+
+    font-size: 14px;
+}
+
+.shipment-table tbody tr {
+    transition: 0.2s;
+}
+
+.shipment-table tbody tr:hover {
+    background-color: #f9fbfd;
+}
+
+.shipment-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+
+/* ================================
+   SHIPMENT DATA
+================================ */
+
+.shipment-name {
+    color: #126e82;
+    font-weight: 700;
+}
+
+.shipment-name:hover {
+    text-decoration: underline;
+}
+
+.container-number {
+    font-family: Consolas, monospace;
+
+    background-color: #eef2f7;
+
+    padding: 5px 8px;
+
+    border-radius: 5px;
+
+    color: #344258;
+
+    font-size: 13px;
+}
+
+
+/* ================================
+   STATUS BADGES
+================================ */
+
+.status {
+    display: inline-block;
+
+    padding: 5px 10px;
+
+    border-radius: 20px;
+
+    font-size: 11px;
+    font-weight: bold;
+
+    letter-spacing: 0.4px;
+}
+
+.status-transit {
+    background-color: #e4f2ff;
+    color: #1769aa;
+}
+
+.status-arrived {
+    background-color: #dcf7ee;
+    color: #13795b;
+}
+
+.status-delivered {
+    background-color: #e7f7e7;
+    color: #247a35;
+}
+
+.status-default {
+    background-color: #edf0f4;
+    color: #596579;
+}
+
+
+/* ================================
+   DATES
+================================ */
+
+.date-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.date-label {
+    color: #708096;
+
+    font-size: 10px;
+    font-weight: bold;
+
+    margin-bottom: 2px;
+}
+
+.arrived-label {
+    color: #13795b;
+}
+
+.last-checked {
+    color: #5e6a7d;
+    font-size: 13px;
+}
+
+.muted {
+    color: #9aa4b2;
+}
+
+
+/* ================================
+   TABLE ACTIONS
+================================ */
+
+.table-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.action-link {
+    color: #126e82;
+    font-weight: 600;
+}
+
+.action-link:hover {
+    text-decoration: underline;
+}
+
+.edit-link {
+    color: #596579;
+}
+
+
+/* ================================
+   EMPTY STATE
+================================ */
+
+.empty-state {
+    text-align: center;
+    padding: 55px 20px;
+}
+
+.empty-icon {
+    width: 48px;
+    height: 48px;
+
+    margin: 0 auto 15px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: #e4f7f4;
+    color: #18a999;
+
+    border-radius: 50%;
+
+    font-size: 26px;
+}
+
+.empty-state h3 {
+    margin-bottom: 6px;
+}
+
+.empty-state p {
+    color: #7a8698;
+    margin-bottom: 20px;
+}
+
+
+/* ================================
+   TABLET
+================================ */
+
+@media (max-width: 900px) {
+
+    .nav-container {
+        align-items: flex-start;
+    }
+
+    .welcome-user {
+        display: none;
+    }
+
+}
+
+
+/* ================================
+   MOBILE
+================================ */
+
+@media (max-width: 700px) {
+
+    .navbar {
+        padding: 14px 0;
+    }
+
+    .nav-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .nav-actions {
+        width: 100%;
+    }
+
+    .nav-actions .btn {
+        flex: 1;
+        text-align: center;
+    }
+
+    .page-container {
+        width: 94%;
+        margin-top: 25px;
+    }
+
+    .page-header h1 {
+        font-size: 25px;
+    }
+
+    .card-header {
+        padding: 18px;
+    }
+
+
+    /* Turn table rows into cards */
+
+    .shipment-table thead {
+        display: none;
+    }
+
+    .shipment-table,
+    .shipment-table tbody,
+    .shipment-table tr,
+    .shipment-table td {
+        display: block;
+        width: 100%;
+    }
+
+    .shipment-table tr {
+        padding: 12px 16px;
+        border-bottom: 1px solid #e5eaf0;
+    }
+
+    .shipment-table td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        gap: 20px;
+
+        padding: 10px 0;
+
+        border: none;
+
+        text-align: right;
+    }
+
+    .shipment-table td::before {
+        content: attr(data-label);
+
+        color: #778397;
+
+        font-size: 11px;
+        font-weight: bold;
+
+        text-transform: uppercase;
+
+        text-align: left;
+    }
+
+    .table-actions {
+        justify-content: flex-end;
+    }
+
+    .empty-state {
+        display: block;
+        text-align: center;
+    }
+
+    .empty-state::before {
+        display: none;
+    }
+
+}
+
+/* ================================
+   SHIPMENT DETAILS
+================================ */
+
+.back-link {
+    display: inline-block;
+    margin-bottom: 25px;
+
+    color: #126e82;
+
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+
+/* Header */
+
+.shipment-details-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 25px;
+
+    margin-bottom: 25px;
+}
+
+.shipment-details-header h1 {
+    color: #10213a;
+    font-size: 32px;
+}
+
+.shipment-owner {
+    margin-top: 5px;
+
+    color: #778397;
+
+    font-size: 14px;
+}
+
+.status-large {
+    padding: 8px 15px;
+    font-size: 12px;
+}
+
+
+/* ================================
+   ROUTE
+================================ */
+
+.route-card {
+    padding: 32px 35px;
+    margin-bottom: 25px;
+}
+
+.route-container {
+    display: grid;
+
+    grid-template-columns:
+        minmax(180px, 1fr)
+        minmax(180px, 1.2fr)
+        minmax(180px, 1fr);
+
+    align-items: center;
+
+    gap: 25px;
+}
+
+.route-label {
+    display: block;
+
+    color: #8290a3;
+
+    font-size: 11px;
+    font-weight: bold;
+
+    letter-spacing: 1px;
+
+    margin-bottom: 7px;
+}
+
+.route-location h2 {
+    color: #10213a;
+
+    font-size: 20px;
+    line-height: 1.3;
+}
+
+.route-destination {
+    text-align: right;
+}
+
+
+/* Route line */
+
+.route-line {
+    display: flex;
+    align-items: center;
+
+    width: 100%;
+}
+
+.route-dot {
+    width: 12px;
+    height: 12px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background-color: #18a999;
+}
+
+.route-path {
+    height: 2px;
+    width: 100%;
+
+    background-color: #cbd7e4;
+}
+
+.route-arrow {
+    color: #18a999;
+
+    font-size: 26px;
+    line-height: 1;
+}
+
+
+/* ================================
+   INFO GRID
+================================ */
+
+.shipment-info-grid {
+    display: grid;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 18px;
+
+    margin-bottom: 25px;
+}
+
+.info-card {
+    min-height: 125px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    padding: 22px;
+
+    background-color: white;
+
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+
+    box-shadow: 0 4px 14px rgba(21, 38, 63, 0.04);
+}
+
+.info-label {
+    color: #7b8798;
+
+    font-size: 10px;
+    font-weight: bold;
+
+    letter-spacing: 0.8px;
+
+    margin-bottom: 10px;
+}
+
+.info-value {
+    color: #172033;
+
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.info-secondary {
+    color: #7c8798;
+
+    font-size: 13px;
+
+    margin-top: 4px;
+}
+
+.container-number-large {
+    font-family: Consolas, monospace;
+
+    color: #126e82;
+
+    font-size: 16px;
+}
+
+
+/* ================================
+   TRACKING ACTIONS
+================================ */
+
+.tracking-actions-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 30px;
+
+    padding: 25px 28px;
+}
+
+.tracking-actions-card h2 {
+    color: #10213a;
+
+    font-size: 18px;
+
+    margin-bottom: 4px;
+}
+
+.tracking-actions-card p {
+    color: #7b8798;
+
+    font-size: 13px;
+}
+
+.shipment-actions {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+}
+
+.refresh-form {
+    margin: 0;
+}
+
+.btn-secondary {
+    background-color: #edf4f7;
+    color: #126e82;
+
+    border: 1px solid #d6e4e9;
+}
+
+.btn-secondary:hover {
+    background-color: #dfecef;
+}
+
+
+/* ================================
+   SHIPMENT DETAILS - TABLET
+================================ */
+
+@media (max-width: 900px) {
+
+    .shipment-info-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .route-container {
+        grid-template-columns:
+            minmax(150px, 1fr)
+            minmax(100px, 0.7fr)
+            minmax(150px, 1fr);
+    }
+
+}
+
+
+/* ================================
+   SHIPMENT DETAILS - MOBILE
+================================ */
+
+@media (max-width: 700px) {
+
+    .shipment-details-header {
+        align-items: flex-start;
+    }
+
+    .shipment-details-header h1 {
+        font-size: 26px;
+    }
+
+
+    /* Route becomes vertical */
+
+    .route-card {
+        padding: 25px 22px;
+    }
+
+    .route-container {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+
+        gap: 16px;
+    }
+
+    .route-destination {
+        text-align: left;
+    }
+
+    .route-line {
+        width: 2px;
+        height: 45px;
+
+        margin-left: 5px;
+
+        flex-direction: column;
+    }
+
+    .route-dot {
+        width: 10px;
+        height: 10px;
+    }
+
+    .route-path {
+        width: 2px;
+        height: 100%;
+    }
+
+    .route-arrow {
+        transform: rotate(90deg);
+
+        font-size: 20px;
+    }
+
+
+    /* Info cards */
+
+    .shipment-info-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .info-card {
+        min-height: auto;
+        padding: 18px;
+    }
+
+
+    /* Bottom actions */
+
+    .tracking-actions-card {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .shipment-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .shipment-actions .btn {
+        width: 100%;
+        text-align: center;
+    }
+
+    .refresh-form button {
+        width: 100%;
+    }
+
+}
+
+/* ================================
+   SHIPMENT HISTORY
+================================ */
+
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+
+    gap: 30px;
+
+    margin-bottom: 25px;
+}
+
+.history-header h1 {
+    color: #10213a;
+    font-size: 32px;
+}
+
+.history-container-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+
+    gap: 5px;
+}
+
+.history-container-number {
+    padding: 7px 10px;
+
+    background-color: #eaf0f5;
+
+    border-radius: 6px;
+
+    color: #126e82;
+
+    font-family: Consolas, monospace;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+
+/* ================================
+   HISTORY HEADER / LEGEND
+================================ */
+
+.history-card {
+    margin-bottom: 40px;
+}
+
+.history-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 25px;
+}
+
+.history-legend {
+    display: flex;
+    align-items: center;
+
+    gap: 18px;
+
+    color: #6d798b;
+
+    font-size: 12px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+
+    gap: 6px;
+}
+
+.legend-dot {
+    width: 8px;
+    height: 8px;
+
+    border-radius: 50%;
+}
+
+.actual-dot {
+    background-color: #18a999;
+}
+
+.estimated-dot {
+    background-color: #3d8ed0;
+}
+
+.detected-dot {
+    background-color: #8064c6;
+}
+
+
+/* ================================
+   HISTORY TABLE
+================================ */
+
+.history-table td {
+    vertical-align: middle;
+}
+
+.history-date {
+    display: flex;
+    flex-direction: column;
+
+    white-space: nowrap;
+}
+
+.history-date span {
+    color: #27364c;
+    font-weight: 600;
+}
+
+.history-date small {
+    color: #8a96a7;
+
+    margin-top: 3px;
+
+    font-size: 11px;
+}
+
+.history-event {
+    color: #27364c;
+    font-weight: 600;
+}
+
+
+/* ================================
+   HISTORY TYPE BADGES
+================================ */
+
+.history-type {
+    display: inline-block;
+
+    padding: 5px 10px;
+
+    border-radius: 20px;
+
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.type-actual {
+    background-color: #dcf7ee;
+    color: #13795b;
+}
+
+.type-estimated {
+    background-color: #e4f2ff;
+    color: #1769aa;
+}
+
+.type-detected {
+    background-color: #eee9fb;
+    color: #6749ad;
+}
+
+
+/* ================================
+   DETECTED CHANGES
+================================ */
+
+.change-event {
+    color: #6749ad;
+    font-weight: 700;
+}
+
+.change-details {
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+
+    flex-wrap: wrap;
+}
+
+.old-value,
+.new-value {
+    padding: 5px 8px;
+
+    border-radius: 5px;
+
+    font-size: 12px;
+}
+
+.old-value {
+    background-color: #f4f5f7;
+    color: #667085;
+}
+
+.new-value {
+    background-color: #e9f7f4;
+    color: #13795b;
+
+    font-weight: 600;
+}
+
+.change-arrow {
+    color: #8491a3;
+    font-weight: bold;
+}
+
+
+/* ================================
+   HISTORY TABLET
+================================ */
+
+@media (max-width: 900px) {
+
+    .history-card-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+}
+
+
+/* ================================
+   HISTORY MOBILE
+================================ */
+
+@media (max-width: 700px) {
+
+    .history-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .history-header h1 {
+        font-size: 26px;
+    }
+
+    .history-container-info {
+        align-items: flex-start;
+    }
+
+    .history-legend {
+        flex-wrap: wrap;
+    }
+
+    .history-table td {
+        align-items: flex-start;
+    }
+
+    .history-table .change-details {
+        justify-content: flex-end;
+    }
+
+}
+
+/* ================================
+   CREATE / EDIT SHIPMENT FORMS
+================================ */
+
+.form-page {
+    max-width: 900px;
+}
+
+.form-page-header {
+    margin-bottom: 25px;
+}
+
+.form-page-header h1 {
+    color: #10213a;
+    font-size: 32px;
+}
+
+
+/* FORM CARD */
+
+.shipment-form-card {
+    overflow: visible;
+    margin-bottom: 40px;
+}
+
+.form-card-header {
+    padding: 24px 28px;
+
+    border-bottom: 1px solid #e5eaf0;
+}
+
+.form-card-header h2 {
+    color: #10213a;
+
+    font-size: 19px;
+
+    margin-bottom: 4px;
+}
+
+.form-card-header p {
+    color: #7b8798;
+
+    font-size: 13px;
+}
+
+
+/* FORM */
+
+.shipment-form {
+    padding: 28px;
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: block;
+
+    color: #27364c;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    margin-bottom: 8px;
+}
+
+.form-input {
+    width: 100%;
+
+    padding: 13px 14px;
+
+    background-color: #ffffff;
+
+    border: 1px solid #ccd6e2;
+    border-radius: 7px;
+
+    color: #172033;
+
+    font-size: 14px;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s,
+        box-shadow 0.2s;
+}
+
+.form-input::placeholder {
+    color: #a5afbd;
+}
+
+.form-input:focus {
+    border-color: #18a999;
+
+    box-shadow: 0 0 0 3px rgba(24, 169, 153, 0.12);
+}
+
+
+/* CONTAINER NUMBER */
+
+.container-input {
+    font-family: Consolas, monospace;
+
+    letter-spacing: 0.5px;
+
+    text-transform: uppercase;
+}
+
+
+/* HELP TEXT */
+
+.form-help {
+    display: block;
+
+    margin-top: 7px;
+
+    color: #8490a1;
+
+    font-size: 12px;
+}
+
+
+/* VALIDATION ERROR */
+
+.form-error {
+    margin-top: 8px;
+
+    padding: 9px 11px;
+
+    background-color: #fff1f1;
+
+    border-left: 3px solid #d94c4c;
+    border-radius: 4px;
+
+    color: #b53c3c;
+
+    font-size: 12px;
+    font-weight: 600;
+}
+
+
+/* FORM BUTTONS */
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    gap: 12px;
+
+    padding-top: 20px;
+
+    border-top: 1px solid #edf0f4;
+}
+
+.btn-cancel {
+    background-color: #eef2f6;
+
+    color: #596579;
+
+    border: 1px solid #dce3eb;
+}
+
+.btn-cancel:hover {
+    background-color: #e3e8ee;
+}
+
+
+/* ================================
+   FORM MOBILE
+================================ */
+
+@media (max-width: 700px) {
+
+    .form-page-header h1 {
+        font-size: 26px;
+    }
+
+    .form-card-header {
+        padding: 20px;
+    }
+
+    .shipment-form {
+        padding: 20px;
+    }
+
+    .form-actions {
+        flex-direction: column-reverse;
+        align-items: stretch;
+    }
+
+    .form-actions .btn {
+        width: 100%;
+
+        text-align: center;
+    }
+
+}
+
+/* ================================
+   LOGIN / REGISTRATION
+================================ */
+
+.auth-body {
+    min-height: 100vh;
+
+    background-color: #f4f7fb;
+}
+
+.auth-layout {
+    min-height: 100vh;
+
+    display: grid;
+    grid-template-columns: 42% 58%;
+}
+
+
+/* ================================
+   LEFT BRAND PANEL
+================================ */
+
+.auth-brand-section {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+
+    padding: 60px;
+
+    background-color: #0b1f3a;
+
+    color: white;
+
+    overflow: hidden;
+}
+
+.auth-brand-section::after {
+    content: "";
+
+    position: absolute;
+
+    width: 350px;
+    height: 350px;
+
+    right: -150px;
+    bottom: -150px;
+
+    border: 60px solid rgba(24, 169, 153, 0.08);
+
+    border-radius: 50%;
+}
+
+.auth-brand-content {
+    position: relative;
+    z-index: 1;
+
+    max-width: 520px;
+
+    margin: auto;
+}
+
+.auth-logo {
+    width: 60px;
+    height: 60px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 35px;
+
+    background-color: #18a999;
+
+    border-radius: 14px;
+
+    color: white;
+
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.auth-label {
+    margin-bottom: 12px;
+
+    color: #42c8b9;
+
+    font-size: 12px;
+    font-weight: bold;
+
+    letter-spacing: 1.8px;
+}
+
+.auth-brand-content h1 {
+    margin-bottom: 20px;
+
+    font-size: 42px;
+    line-height: 1.15;
+}
+
+.auth-description {
+    max-width: 470px;
+
+    color: #b8c6d9;
+
+    font-size: 16px;
+    line-height: 1.7;
+}
+
+
+/* FEATURES */
+
+.auth-features {
+    display: flex;
+    flex-direction: column;
+
+    gap: 22px;
+
+    margin-top: 45px;
+}
+
+.auth-feature {
+    display: flex;
+    align-items: flex-start;
+
+    gap: 13px;
+}
+
+.feature-icon {
+    width: 25px;
+    height: 25px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: rgba(24, 169, 153, 0.18);
+
+    border-radius: 50%;
+
+    color: #42c8b9;
+
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.auth-feature strong {
+    display: block;
+
+    margin-bottom: 3px;
+
+    font-size: 14px;
+}
+
+.auth-feature span {
+    display: block;
+
+    color: #aebdd0;
+
+    font-size: 12px;
+
+    line-height: 1.5;
+}
+
+
+/* ================================
+   RIGHT FORM AREA
+================================ */
+
+.auth-form-section {
+    padding: 45px 60px;
+
+    overflow-y: auto;
+}
+
+.auth-forms-container {
+    width: 100%;
+    max-width: 700px;
+
+    margin: auto;
+}
+
+.auth-mobile-brand {
+    display: none;
+}
+
+
+/* ================================
+   AUTH CARDS
+================================ */
+
+.auth-card {
+    padding: 30px;
+
+    background-color: white;
+
+    border: 1px solid #e0e6ed;
+    border-radius: 12px;
+
+    box-shadow: 0 5px 18px rgba(21, 38, 63, 0.05);
+}
+
+.auth-card-header {
+    margin-bottom: 25px;
+}
+
+.auth-card-header h2 {
+    margin-bottom: 5px;
+
+    color: #10213a;
+
+    font-size: 25px;
+}
+
+.auth-card-header p:not(.page-label) {
+    color: #7b8798;
+
+    font-size: 13px;
+}
+
+.auth-form .form-group {
+    margin-bottom: 20px;
+}
+
+
+/* TWO INPUTS ON SAME ROW */
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    gap: 18px;
+}
+
+
+/* FULL BUTTON */
+
+.auth-submit {
+    width: 100%;
+
+    padding: 13px;
+
+    font-size: 14px;
+}
+
+
+/* ================================
+   DIVIDER
+================================ */
+
+.auth-divider {
+    display: flex;
+    align-items: center;
+
+    gap: 15px;
+
+    margin: 25px 0;
+
+    color: #98a3b2;
+
+    font-size: 10px;
+    font-weight: bold;
+
+    letter-spacing: 0.7px;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+    content: "";
+
+    height: 1px;
+
+    flex: 1;
+
+    background-color: #dfe5ec;
+}
+
+
+/* ================================
+   GENERAL LOGIN ERROR
+================================ */
+
+.auth-general-error {
+    margin-bottom: 20px;
+
+    padding: 11px 13px;
+
+    background-color: #fff1f1;
+
+    border-left: 3px solid #d94c4c;
+    border-radius: 5px;
+
+    color: #b53c3c;
+
+    font-size: 13px;
+    font-weight: 600;
+}
+
+
+/* ================================
+   AUTH TABLET
+================================ */
+
+@media (max-width: 1000px) {
+
+    .auth-layout {
+        grid-template-columns: 38% 62%;
+    }
+
+    .auth-brand-section {
+        padding: 40px;
+    }
+
+    .auth-brand-content h1 {
+        font-size: 34px;
+    }
+
+    .auth-form-section {
+        padding: 40px;
+    }
+
+}
+
+/* ================================
+   AUTH MOBILE
+================================ */
+
+@media (max-width: 750px) {
+
+    .auth-layout {
+        display: block;
+    }
+
+    .auth-brand-section {
+        display: none;
+    }
+
+    .auth-form-section {
+        min-height: 100vh;
+        padding: 25px 18px 40px;
+    }
+
+    .auth-card {
+        padding: 23px 20px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+}
+
+
+/* ================================
+   WHERE'S MY BOX LOGO
+================================ */
+
+.auth-main-logo {
+    width: 100%;
+    margin-bottom: 28px;
+}
+
+.auth-website-logo {
+    display: block;
+    width: 100%;
+    max-width: 480px;
+    height: auto;
+    object-fit: contain;
+}
+
+
+/* Hide mobile logo on desktop */
+
+.auth-mobile-brand {
+    display: none;
+}
+
+.auth-mobile-logo {
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    object-fit: contain;
+}
+
+
+/* ================================
+   MOBILE LOGO
+================================ */
+
+@media (max-width: 750px) {
+
+    .auth-mobile-brand {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        width: 100%;
+        margin-bottom: 30px;
+    }
+
+    .auth-mobile-logo {
+        width: 85%;
+        max-width: 300px;
+    }
+}

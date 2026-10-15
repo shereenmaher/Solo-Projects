@@ -1,39 +1,309 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shipment Details</title>
+
+    <title>{{ shipment.name }} | Shipment Tracker</title>
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
+
 <body>
-    <h2>Welcome to your Tracker, {{ user.firstname }}</h2>
 
-    <a href="{% url 'dashboard' %}">Dashboard</a>
-    <a href="{% url 'logout' %}">Logout</a>
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="nav-container">
 
-    <h1>{{ shipment.name }}</h1>
+            <a href="{% url 'dashboard' %}" class="brand">
+                <div class="brand-icon">ST</div>
 
-    <p>Added by: {{ shipment.user.firstname }} {{ shipment.user.lastname }}</p>
-    <p>Container number: {{ shipment.number }}</p>
-    <p>Status: {{ shipment.status }}</p>
-    {% if shipment.ata %}
-        <p>Arrived: {{ shipment.ata }}</p>
-    {% else %}
-        <p>ETA: {{ shipment.eta|default:"Not available" }}</p>
-    {% endif %}
-    <p>Vessel: {{ shipment.vessel|default:"Not available" }}</p>
-    <p>Origin port: {{ shipment.origin|default:"Not available" }}</p>
-    <p>Destination port: {{ shipment.destination|default:"Not available" }}</p>
-    <p>Last checked: {{ shipment.lastchecked|default:"Not checked yet" }}</p>
+                <div>
+                    <span class="brand-name">Where's My Box?</span>
+                    <span class="brand-subtitle">Container Tracking</span>
+                </div>
+            </a>
 
-    <h3>Shipment History</h3>
-    <a href="{% url 'shipment_history' shipment.id %}">Shipment history</a>
+            <div class="nav-actions">
+                <span class="welcome-user">
+                    Hi, {{ user.firstname }}
+                </span>
 
-    <form action="{% url 'refresh_shipment' shipment.id %}" method="POST">
-    {% csrf_token %}
-    <button type="submit">Refresh Tracking Data</button>
-</form>
+                <a href="{% url 'dashboard' %}" class="btn btn-outline">
+                    Dashboard
+                </a>
+
+                <a href="{% url 'logout' %}" class="btn btn-outline">
+                    Logout
+                </a>
+            </div>
+
+        </div>
+    </nav>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="page-container">
+
+        <!-- BACK LINK -->
+        <a href="{% url 'dashboard' %}" class="back-link">
+            ← Back to Dashboard
+        </a>
+
+
+        <!-- SHIPMENT HEADER -->
+        <section class="shipment-details-header">
+
+            <div>
+                <p class="page-label">SHIPMENT DETAILS</p>
+
+                <h1>{{ shipment.name }}</h1>
+
+                <p class="shipment-owner">
+                    Added by {{ shipment.user.firstname }}
+                    {{ shipment.user.lastname }}
+                </p>
+            </div>
+
+
+            <!-- STATUS -->
+            <div>
+
+                {% if shipment.status == "IN_TRANSIT" %}
+
+                    <span class="status status-transit status-large">
+                        In Transit
+                    </span>
+
+                {% elif shipment.status == "ARRIVED" %}
+
+                    <span class="status status-arrived status-large">
+                        Arrived
+                    </span>
+
+                {% elif shipment.status == "DELIVERED" %}
+
+                    <span class="status status-delivered status-large">
+                        Delivered
+                    </span>
+
+                {% else %}
+
+                    <span class="status status-default status-large">
+                        {{ shipment.status }}
+                    </span>
+
+                {% endif %}
+
+            </div>
+
+        </section>
+
+
+        <!-- ROUTE CARD -->
+        <section class="card route-card">
+
+            <div class="route-container">
+
+                <!-- ORIGIN -->
+                <div class="route-location">
+
+                    <span class="route-label">
+                        ORIGIN
+                    </span>
+
+                    <h2>
+                        {{ shipment.origin|default:"Not available" }}
+                    </h2>
+
+                </div>
+
+
+                <!-- ROUTE LINE -->
+                <div class="route-line">
+
+                    <div class="route-dot"></div>
+
+                    <div class="route-path"></div>
+
+                    <div class="route-arrow">→</div>
+
+                </div>
+
+
+                <!-- DESTINATION -->
+                <div class="route-location route-destination">
+
+                    <span class="route-label">
+                        DESTINATION
+                    </span>
+
+                    <h2>
+                        {{ shipment.destination|default:"Not available" }}
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- INFORMATION GRID -->
+        <section class="shipment-info-grid">
+
+            <!-- CONTAINER -->
+            <div class="info-card">
+
+                <span class="info-label">
+                    CONTAINER NUMBER
+                </span>
+
+                <span class="info-value container-number-large">
+                    {{ shipment.number }}
+                </span>
+
+            </div>
+
+
+            <!-- VESSEL -->
+            <div class="info-card">
+
+                <span class="info-label">
+                    VESSEL
+                </span>
+
+                <span class="info-value">
+                    {{ shipment.vessel|default:"Not available" }}
+                </span>
+
+            </div>
+
+
+            <!-- ARRIVAL -->
+            <div class="info-card">
+
+                {% if shipment.ata %}
+
+                    <span class="info-label arrived-label">
+                        ACTUAL ARRIVAL
+                    </span>
+
+                    <span class="info-value">
+                        {{ shipment.ata|date:"M d, Y" }}
+                    </span>
+
+                    <span class="info-secondary">
+                        {{ shipment.ata|date:"H:i" }}
+                    </span>
+
+                {% else %}
+
+                    <span class="info-label">
+                        ESTIMATED ARRIVAL
+                    </span>
+
+                    {% if shipment.eta %}
+
+                        <span class="info-value">
+                            {{ shipment.eta|date:"M d, Y" }}
+                        </span>
+
+                        <span class="info-secondary">
+                            {{ shipment.eta|date:"H:i" }}
+                        </span>
+
+                    {% else %}
+
+                        <span class="info-value">
+                            Not available
+                        </span>
+
+                    {% endif %}
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- LAST CHECKED -->
+            <div class="info-card">
+
+                <span class="info-label">
+                    LAST CHECKED
+                </span>
+
+                {% if shipment.lastchecked %}
+
+                    <span class="info-value">
+                        {{ shipment.lastchecked|date:"M d, Y" }}
+                    </span>
+
+                    <span class="info-secondary">
+                        {{ shipment.lastchecked|date:"H:i" }}
+                    </span>
+
+                {% else %}
+
+                    <span class="info-value">
+                        Not checked yet
+                    </span>
+
+                {% endif %}
+
+            </div>
+
+        </section>
+
+
+        <!-- TRACKING ACTIONS -->
+        <section class="card tracking-actions-card">
+
+            <div>
+
+                <h2>Tracking Information</h2>
+
+                <p>
+                    View the shipment journey or request the latest
+                    tracking information.
+                </p>
+
+            </div>
+
+
+            <div class="shipment-actions">
+
+                <a
+                    href="{% url 'shipment_history' shipment.id %}"
+                    class="btn btn-secondary"
+                >
+                    View Shipment History
+                </a>
+
+
+                <form
+                    action="{% url 'refresh_shipment' shipment.id %}"
+                    method="POST"
+                    class="refresh-form"
+                >
+
+                    {% csrf_token %}
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary"
+                    >
+                        Refresh Tracking Data
+                    </button>
+
+                </form>
+
+            </div>
+
+        </section>
+
+    </main>
 
 </body>
 </html>

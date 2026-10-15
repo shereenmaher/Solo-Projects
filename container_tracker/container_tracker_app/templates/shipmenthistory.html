@@ -1,79 +1,332 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Shipment History</title>
-  </head>
-  <body>
-    <h2>Welcome, {{ user.firstname }}</h2>
 
-    <a href="{% url 'dashboard' %}">Dashboard</a>
-    <a href="{% url 'logout' %}">Logout</a>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <h1>History for {{ shipment.name }}</h1>
-    <p>Container number: {{ shipment.number }}</p>
+    <title>{{ shipment.name }} History | Shipment Tracker</title>
 
-    <table border="1">
-      <thead>
-        <tr>
-          <th>Date</th>
-          <th>Event</th>
-          <th>Location</th>
-          <th>Details</th>
-          <th>Type</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for record in history %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
 
-        <tr>
-          <td>{{ record.event_date|default:record.created_at }}</td>
+<body>
 
-          {% if record.change_type %}
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="nav-container">
 
-          <td>{{ record.change_type }} Change</td>
+            <a href="{% url 'dashboard' %}" class="brand">
+                <div class="brand-icon">ST</div>
 
-          <td>-</td>
+                <div>
+                    <span class="brand-name">Where's My Box?</span>
+                    <span class="brand-subtitle">Container Tracking</span>
+                </div>
+            </a>
 
-          <td>
-            Changed from
-            <strong>{{ record.old_value }}</strong>
-            →
-            <strong>{{ record.new_value }}</strong>
-          </td>
+            <div class="nav-actions">
 
-          <td>Detected</td>
+                <span class="welcome-user">
+                    Hi, {{ user.firstname }}
+                </span>
 
-          {% else %}
+                <a href="{% url 'dashboard' %}" class="btn btn-outline">
+                    Dashboard
+                </a>
 
-          <td>{{ record.description|default:record.status }}</td>
+                <a href="{% url 'logout' %}" class="btn btn-outline">
+                    Logout
+                </a>
 
-          <td>{{ record.location|default:"Unknown" }}</td>
+            </div>
+        </div>
+    </nav>
 
-          <td>{{ record.status }}</td>
 
-          <td>
-            {% if record.is_actual %} Actual {% else %} Estimated {% endif %}
-          </td>
+    <!-- MAIN -->
+    <main class="page-container">
 
-          {% endif %}
-        </tr>
+        <!-- BACK -->
+        <a
+            href="{% url 'view_shipment' shipment.id %}"
+            class="back-link"
+        >
+            ← Back to Shipment Details
+        </a>
 
-        {% empty %}
 
-        <tr>
-          <td colspan="5">No shipment history available yet.</td>
-        </tr>
+        <!-- HEADER -->
+        <section class="history-header">
 
-        {% endfor %}
-      </tbody>
-    </table>
+            <div>
+                <p class="page-label">
+                    SHIPMENT HISTORY
+                </p>
 
-    <p>
-      <a href="{% url 'view_shipment' shipment.id %}">
-        Back to shipment details
-      </a>
-    </p>
-  </body>
+                <h1>
+                    {{ shipment.name }}
+                </h1>
+
+                <p class="page-description">
+                    Complete tracking journey and detected shipment changes.
+                </p>
+            </div>
+
+
+            <div class="history-container-info">
+
+                <span class="info-label">
+                    CONTAINER NUMBER
+                </span>
+
+                <span class="history-container-number">
+                    {{ shipment.number }}
+                </span>
+
+            </div>
+
+        </section>
+
+
+        <!-- HISTORY CARD -->
+        <section class="card history-card">
+
+            <div class="card-header history-card-header">
+
+                <div>
+                    <h2>Tracking Timeline</h2>
+
+                    <p>
+                        Journey events and changes detected by Shipment Tracker
+                    </p>
+                </div>
+
+                <div class="history-legend">
+
+                    <span class="legend-item">
+                        <span class="legend-dot actual-dot"></span>
+                        Actual
+                    </span>
+
+                    <span class="legend-item">
+                        <span class="legend-dot estimated-dot"></span>
+                        Estimated
+                    </span>
+
+                    <span class="legend-item">
+                        <span class="legend-dot detected-dot"></span>
+                        Detected
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="table-wrapper">
+
+                <table class="shipment-table history-table">
+
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Event</th>
+                            <th>Location</th>
+                            <th>Details</th>
+                            <th>Type</th>
+                        </tr>
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for record in history %}
+
+                        <tr>
+
+                            <!-- DATE -->
+                            <td data-label="Date">
+
+                                <div class="history-date">
+
+                                    {% if record.event_date %}
+
+                                        <span>
+                                            {{ record.event_date|date:"M d, Y" }}
+                                        </span>
+
+                                        <small>
+                                            {{ record.event_date|date:"H:i" }}
+                                        </small>
+
+                                    {% else %}
+
+                                        <span>
+                                            {{ record.created_at|date:"M d, Y" }}
+                                        </span>
+
+                                    {% endif %}
+
+                                </div>
+
+                            </td>
+
+
+                            {% if record.change_type %}
+
+                                <!-- DETECTED CHANGE -->
+
+                                <td data-label="Event">
+
+                                    <span class="change-event">
+                                        {{ record.change_type }} Change
+                                    </span>
+
+                                </td>
+
+
+                                <td data-label="Location">
+
+                                    <span class="muted">
+                                        —
+                                    </span>
+
+                                </td>
+
+
+                                <td data-label="Details">
+
+                                    <div class="change-details">
+
+                                        <span class="old-value">
+                                            {{ record.old_value }}
+                                        </span>
+
+                                        <span class="change-arrow">
+                                            →
+                                        </span>
+
+                                        <span class="new-value">
+                                            {{ record.new_value }}
+                                        </span>
+
+                                    </div>
+
+                                </td>
+
+
+                                <td data-label="Type">
+
+                                    <span class="history-type type-detected">
+                                        Detected
+                                    </span>
+
+                                </td>
+
+
+                            {% else %}
+
+                                <!-- TRAQO EVENT -->
+
+                                <td data-label="Event">
+
+                                    <span class="history-event">
+                                        {{ record.description|default:record.status }}
+                                    </span>
+
+                                </td>
+
+
+                                <td data-label="Location">
+
+                                    {% if record.location %}
+
+                                        {{ record.location }}
+
+                                    {% else %}
+
+                                        <span class="muted">
+                                            Unknown
+                                        </span>
+
+                                    {% endif %}
+
+                                </td>
+
+
+                                <td data-label="Details">
+
+                                    {{ record.status }}
+
+                                </td>
+
+
+                                <td data-label="Type">
+
+                                    {% if record.is_actual %}
+
+                                        <span class="history-type type-actual">
+                                            Actual
+                                        </span>
+
+                                    {% else %}
+
+                                        <span class="history-type type-estimated">
+                                            Estimated
+                                        </span>
+
+                                    {% endif %}
+
+                                </td>
+
+                            {% endif %}
+
+                        </tr>
+
+
+                        {% empty %}
+
+                        <tr>
+                            <td colspan="5">
+
+                                <div class="empty-state">
+
+                                    <div class="empty-icon">
+                                        ↻
+                                    </div>
+
+                                    <h3>No tracking history yet</h3>
+
+                                    <p>
+                                        Refresh this shipment to retrieve its
+                                        latest tracking events.
+                                    </p>
+
+                                    <a
+                                        href="{% url 'view_shipment' shipment.id %}"
+                                        class="btn btn-primary"
+                                    >
+                                        Back to Shipment
+                                    </a>
+
+                                </div>
+
+                            </td>
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</body>
 </html>
