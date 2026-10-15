@@ -494,14 +494,7 @@ class shipmentManager(models.Manager):
         shipment.number=data['number']
         shipment.save()
 
-    def days_until_arrival(self):
-
-        if not self.eta:
-            return None
-
-        difference = self.eta - timezone.now()
-
-        return difference.days
+    
 
     
 class User(models.Model):
@@ -527,6 +520,15 @@ class Shipment(models.Model):
     created_at=models.DateField(auto_now_add=True)
     updated_at=models.DateField(auto_now=True)
     objects=shipmentManager()
+
+    def days_until_arrival(self):
+    
+            if not self.eta:
+                return None
+    
+            difference = self.eta - timezone.now()
+    
+            return difference.days
 
 class shipmentHistory(models.Model):
     shipment=models.ForeignKey(Shipment,related_name='history',on_delete=models.CASCADE)

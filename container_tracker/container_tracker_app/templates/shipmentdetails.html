@@ -2,96 +2,176 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>{{ shipment.name }} | Where's My Box?</title>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        {{ shipment.name }} | Where's My Box?
+    </title>
 
     {% load static %}
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/style.css' %}"
+    >
+
 </head>
+
 
 <body>
 
-    <!-- NAVBAR -->
+
+    <!-- =========================================
+         NAVBAR
+    ========================================== -->
+
     <nav class="navbar">
+
         <div class="nav-container">
 
-            <a href="{% url 'dashboard' %}" class="brand">
-                <div class="brand-icon">ST</div>
+            <a
+                href="{% url 'dashboard' %}"
+                class="brand"
+            >
+
+                <div class="brand-icon">
+                    ST
+                </div>
 
                 <div>
-                    <span class="brand-name">Where's My Box?</span>
-                    <span class="brand-subtitle">Container Tracking</span>
+
+                    <span class="brand-name">
+                        Where's My Box?
+                    </span>
+
+                    <span class="brand-subtitle">
+                        Container Tracking
+                    </span>
+
                 </div>
+
             </a>
 
+
             <div class="nav-actions">
+
                 <span class="welcome-user">
                     Hi, {{ user.firstname }}
                 </span>
 
-                <a href="{% url 'dashboard' %}" class="btn btn-outline">
+
+                <a
+                    href="{% url 'dashboard' %}"
+                    class="btn btn-outline"
+                >
                     Dashboard
                 </a>
 
-                <a href="{% url 'logout' %}" class="btn btn-outline">
+
+                <a
+                    href="{% url 'logout' %}"
+                    class="btn btn-outline"
+                >
                     Logout
                 </a>
+
             </div>
 
         </div>
+
     </nav>
 
 
-    <!-- MAIN CONTENT -->
+
+    <!-- =========================================
+         MAIN CONTENT
+    ========================================== -->
+
     <main class="page-container">
 
+
         <!-- BACK LINK -->
-        <a href="{% url 'dashboard' %}" class="back-link">
+
+        <a
+            href="{% url 'dashboard' %}"
+            class="back-link"
+        >
             ← Back to Dashboard
         </a>
 
 
-        <!-- SHIPMENT HEADER -->
+
+        <!-- =========================================
+             SHIPMENT HEADER
+        ========================================== -->
+
         <section class="shipment-details-header">
 
-            <div>
-                <p class="page-label">SHIPMENT DETAILS</p>
 
-                <h1>{{ shipment.name }}</h1>
+            <div>
+
+                <p class="page-label">
+                    SHIPMENT DETAILS
+                </p>
+
+                <h1>
+                    {{ shipment.name }}
+                </h1>
 
                 <p class="shipment-owner">
-                    Added by {{ shipment.user.firstname }}
+
+                    Added by
+                    {{ shipment.user.firstname }}
                     {{ shipment.user.lastname }}
+
                 </p>
+
             </div>
 
 
+
             <!-- STATUS -->
+
             <div>
 
                 {% if shipment.status == "IN_TRANSIT" %}
 
-                    <span class="status status-transit status-large">
+                    <span
+                        class="status status-transit status-large"
+                    >
                         In Transit
                     </span>
 
+
                 {% elif shipment.status == "ARRIVED" %}
 
-                    <span class="status status-arrived status-large">
+                    <span
+                        class="status status-arrived status-large"
+                    >
                         Arrived
                     </span>
 
+
                 {% elif shipment.status == "DELIVERED" %}
 
-                    <span class="status status-delivered status-large">
+                    <span
+                        class="status status-delivered status-large"
+                    >
                         Delivered
                     </span>
 
+
                 {% else %}
 
-                    <span class="status status-default status-large">
+                    <span
+                        class="status status-default status-large"
+                    >
                         {{ shipment.status }}
                     </span>
 
@@ -99,15 +179,22 @@
 
             </div>
 
+
         </section>
 
 
-        <!-- ROUTE CARD -->
+
+        <!-- =========================================
+             ROUTE CARD
+        ========================================== -->
+
         <section class="card route-card">
 
             <div class="route-container">
 
+
                 <!-- ORIGIN -->
+
                 <div class="route-location">
 
                     <span class="route-label">
@@ -121,20 +208,28 @@
                 </div>
 
 
+
                 <!-- ROUTE LINE -->
+
                 <div class="route-line">
 
                     <div class="route-dot"></div>
 
                     <div class="route-path"></div>
 
-                    <div class="route-arrow">→</div>
+                    <div class="route-arrow">
+                        →
+                    </div>
 
                 </div>
 
 
+
                 <!-- DESTINATION -->
-                <div class="route-location route-destination">
+
+                <div
+                    class="route-location route-destination"
+                >
 
                     <span class="route-label">
                         DESTINATION
@@ -146,29 +241,40 @@
 
                 </div>
 
+
             </div>
 
         </section>
 
 
-        <!-- INFORMATION GRID -->
+
+        <!-- =========================================
+             SHIPMENT INFORMATION
+        ========================================== -->
+
         <section class="shipment-info-grid">
 
-            <!-- CONTAINER -->
+
+            <!-- CONTAINER NUMBER -->
+
             <div class="info-card">
 
                 <span class="info-label">
                     CONTAINER NUMBER
                 </span>
 
-                <span class="info-value container-number-large">
+                <span
+                    class="info-value container-number-large"
+                >
                     {{ shipment.number }}
                 </span>
 
             </div>
 
 
+
             <!-- VESSEL -->
+
             <div class="info-card">
 
                 <span class="info-label">
@@ -182,88 +288,145 @@
             </div>
 
 
+
             <!-- ARRIVAL -->
+
             <div class="info-card">
+
 
                 {% if shipment.ata %}
 
-                    <span class="info-label arrived-label">
+                    <span
+                        class="info-label arrived-label"
+                    >
                         ACTUAL ARRIVAL
                     </span>
 
+
                     <span class="info-value">
+
                         {{ shipment.ata|date:"M d, Y" }}
+
                     </span>
 
+
                     <span class="info-secondary">
+
                         {{ shipment.ata|date:"H:i" }}
+
                     </span>
+
 
                 {% else %}
 
+
                     <span class="info-label">
+
                         ESTIMATED ARRIVAL
+
                     </span>
+
 
                     {% if shipment.eta %}
 
+
                         <span class="info-value">
+
                             {{ shipment.eta|date:"M d, Y" }}
+
                         </span>
 
+
                         <span class="info-secondary">
+
                             {{ shipment.eta|date:"H:i" }}
+
                         </span>
+
 
                     {% else %}
 
+
                         <span class="info-value">
+
                             Not available
+
                         </span>
+
 
                     {% endif %}
 
+
                 {% endif %}
 
+
             </div>
+
 
 
             <!-- LAST CHECKED -->
+
             <div class="info-card">
 
+
                 <span class="info-label">
+
                     LAST CHECKED
+
                 </span>
+
 
                 {% if shipment.lastchecked %}
 
+
                     <span class="info-value">
+
                         {{ shipment.lastchecked|date:"M d, Y" }}
+
                     </span>
 
+
                     <span class="info-secondary">
+
                         {{ shipment.lastchecked|date:"H:i" }}
+
                     </span>
+
 
                 {% else %}
 
+
                     <span class="info-value">
+
                         Not checked yet
+
                     </span>
+
 
                 {% endif %}
 
+
             </div>
+
 
         </section>
 
 
-        <!-- DOCUMENT READINESS -->
+
+        <!-- =========================================
+             DOCUMENT READINESS
+        ========================================== -->
+
         <section class="documents-card">
+
+
+            <!-- DOCUMENT HEADER -->
 
             <div class="documents-header">
 
+
                 <div>
+
                     <p class="section-label">
                         DOCUMENTS
                     </p>
@@ -271,32 +434,49 @@
                     <h2>
                         Document Readiness
                     </h2>
+
                 </div>
 
+
                 <div class="readiness-percentage">
+
                     {{ documents.readiness_percentage }}%
+
                 </div>
+
 
             </div>
 
 
-            <!-- READINESS BAR -->
+
+            <!-- =====================================
+                 READINESS BAR
+            ====================================== -->
+
             <div class="readiness-bar">
 
                 <div
                     class="readiness-fill"
-                    style="width: {{ documents.readiness_percentage }}%;">
+                    style="width: {{ documents.readiness_percentage }}%;"
+                >
                 </div>
 
             </div>
 
 
-            <!-- DOCUMENT LIST -->
+
+            <!-- =====================================
+                 DOCUMENT LIST
+            ====================================== -->
+
             <div class="document-list">
 
 
+
                 <!-- COMMERCIAL INVOICE -->
+
                 <div class="document-item">
+
 
                     {% if documents.commercial_invoice %}
 
@@ -312,15 +492,20 @@
 
                     {% endif %}
 
+
                     <span>
                         Commercial Invoice
                     </span>
 
+
                 </div>
 
 
+
                 <!-- PACKING LIST -->
+
                 <div class="document-item">
+
 
                     {% if documents.packing_list %}
 
@@ -336,15 +521,20 @@
 
                     {% endif %}
 
+
                     <span>
                         Packing List
                     </span>
 
+
                 </div>
 
 
+
                 <!-- BILL OF LADING -->
+
                 <div class="document-item">
+
 
                     {% if documents.bill_of_lading %}
 
@@ -360,15 +550,20 @@
 
                     {% endif %}
 
+
                     <span>
                         Bill of Lading
                     </span>
 
+
                 </div>
 
 
+
                 <!-- CERTIFICATE OF ORIGIN -->
+
                 <div class="document-item">
+
 
                     {% if documents.certificate_of_origin %}
 
@@ -384,15 +579,20 @@
 
                     {% endif %}
 
+
                     <span>
                         Certificate of Origin
                     </span>
 
+
                 </div>
 
 
+
                 <!-- INSURANCE -->
+
                 <div class="document-item">
+
 
                     {% if documents.insurance %}
 
@@ -408,15 +608,20 @@
 
                     {% endif %}
 
+
                     <span>
                         Insurance
                     </span>
 
+
                 </div>
 
 
+
                 <!-- CUSTOMS DECLARATION -->
+
                 <div class="document-item">
+
 
                     {% if documents.customs_declaration %}
 
@@ -432,27 +637,94 @@
 
                     {% endif %}
 
+
                     <span>
                         Customs Declaration
                     </span>
 
+
                 </div>
+
 
             </div>
 
 
-            <!-- DOCUMENT STATUS -->
+
+            <!-- =====================================
+                 DOCUMENT STATUS / RISK
+            ====================================== -->
+
+
             {% if documents.missing_count > 0 %}
 
-                <div class="documents-warning">
 
-                    ⚠ {{ documents.missing_count }}
-                    document{{ documents.missing_count|pluralize }}
-                    still missing
+                <!--
+                    Shipment has missing documents.
 
-                </div>
+                    If arrival is 0-3 days away,
+                    show the stronger risk warning.
+                -->
+
+
+                {% if shipment.days_until_arrival >= 0 and shipment.days_until_arrival <= 3 %}
+
+
+                    <div class="documents-danger">
+
+
+                        <strong>
+                            🚨 Documentation Risk
+                        </strong>
+
+
+                        <p>
+
+                            Shipment is expected in
+
+                            {{ shipment.days_until_arrival }}
+
+                            day{{ shipment.days_until_arrival|pluralize }},
+
+                            but
+
+                            {{ documents.missing_count }}
+
+                            required
+                            document{{ documents.missing_count|pluralize }}
+
+                            still missing.
+
+                        </p>
+
+
+                    </div>
+
+
+                {% else %}
+
+
+                    <!-- NORMAL MISSING DOCUMENT WARNING -->
+
+                    <div class="documents-warning">
+
+                        ⚠
+
+                        {{ documents.missing_count }}
+
+                        document{{ documents.missing_count|pluralize }}
+
+                        still missing
+
+                    </div>
+
+
+                {% endif %}
+
 
             {% else %}
+
+
+                <!-- ALL DOCUMENTS COMPLETE -->
 
                 <div class="documents-ready">
 
@@ -460,10 +732,15 @@
 
                 </div>
 
+
             {% endif %}
 
 
-            <!-- MANAGE DOCUMENTS -->
+
+            <!-- =====================================
+                 MANAGE DOCUMENTS
+            ====================================== -->
+
             <a
                 href="{% url 'edit_shipment_documents' shipment.id %}"
                 class="btn-manage-documents"
@@ -471,27 +748,44 @@
                 Manage Documents
             </a>
 
+
         </section>
 
 
-        <!-- TRACKING ACTIONS -->
-        <section class="card tracking-actions-card">
+
+        <!-- =========================================
+             TRACKING ACTIONS
+        ========================================== -->
+
+        <section
+            class="card tracking-actions-card"
+        >
+
 
             <div>
+
 
                 <h2>
                     Tracking Information
                 </h2>
 
+
                 <p>
-                    View the shipment journey or request the latest
-                    tracking information.
+
+                    View the shipment journey or request
+                    the latest tracking information.
+
                 </p>
+
 
             </div>
 
 
+
             <div class="shipment-actions">
+
+
+                <!-- HISTORY -->
 
                 <a
                     href="{% url 'shipment_history' shipment.id %}"
@@ -501,13 +795,18 @@
                 </a>
 
 
+
+                <!-- REFRESH -->
+
                 <form
                     action="{% url 'refresh_shipment' shipment.id %}"
                     method="POST"
                     class="refresh-form"
                 >
 
+
                     {% csrf_token %}
+
 
                     <button
                         type="submit"
@@ -516,13 +815,18 @@
                         Refresh Tracking Data
                     </button>
 
+
                 </form>
+
 
             </div>
 
+
         </section>
 
+
     </main>
+
 
 </body>
 
