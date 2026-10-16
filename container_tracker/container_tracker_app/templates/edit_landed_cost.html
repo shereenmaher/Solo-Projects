@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Manage Landed Cost | Where's My Box?
+    </title>
+
+    {% load static %}
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/style.css' %}"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================================
+         NAVBAR
+    ========================================== -->
+
+    <nav class="navbar">
+
+        <div class="nav-container">
+
+            <a
+                href="{% url 'dashboard' %}"
+                class="brand"
+            >
+
+                <div class="brand-icon">
+                    ST
+                </div>
+
+                <div>
+
+                    <span class="brand-name">
+                        Where's My Box?
+                    </span>
+
+                    <span class="brand-subtitle">
+                        Container Tracking
+                    </span>
+
+                </div>
+
+            </a>
+
+
+            <div class="nav-actions">
+
+                <span class="welcome-user">
+                    Hi, {{ user.firstname }}
+                </span>
+
+                <a
+                    href="{% url 'dashboard' %}"
+                    class="btn btn-outline"
+                >
+                    Dashboard
+                </a>
+
+                <a
+                    href="{% url 'logout' %}"
+                    class="btn btn-outline"
+                >
+                    Logout
+                </a>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+
+    <!-- =========================================
+         MAIN CONTENT
+    ========================================== -->
+
+    <main class="page-container">
+
+
+        <!-- BACK -->
+
+        <a
+            href="{% url 'view_shipment' shipment.id %}"
+            class="back-link"
+        >
+            ← Back to Shipment Details
+        </a>
+
+
+        <!-- =========================================
+             PAGE HEADER
+        ========================================== -->
+
+        <section class="cost-page-header">
+
+            <p class="page-label">
+                LANDED COST
+            </p>
+
+            <h1>
+                Manage Landed Cost
+            </h1>
+
+            <p>
+                {{ shipment.name }}
+                ·
+                {{ shipment.number }}
+            </p>
+
+        </section>
+
+
+        <!-- =========================================
+             EDIT COST CARD
+        ========================================== -->
+
+        <section class="cost-edit-card">
+
+
+            <div class="cost-edit-header">
+
+                <div>
+
+                    <h2>
+                        Shipment Costs
+                    </h2>
+
+                    <p>
+                        Enter the costs associated with
+                        bringing this shipment to your warehouse.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- =====================================
+                 FORM
+            ====================================== -->
+
+            <form
+                action="{% url 'edit_landed_cost' shipment.id %}"
+                method="POST"
+            >
+
+                {% csrf_token %}
+
+
+                <div class="cost-form-grid">
+
+
+                    <!-- GOODS VALUE -->
+
+                    <div class="cost-form-group">
+
+                        <label for="goods_value">
+                            Goods Value
+                        </label>
+
+                        <div class="cost-input-wrapper">
+
+                            <span class="cost-currency">
+                                $
+                            </span>
+
+                            <input
+                                type="number"
+                                id="goods_value"
+                                name="goods_value"
+                                class="cost-input"
+                                value="{{ landed_cost.goods_value }}"
+                                min="0"
+                                step="0.01"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- OCEAN FREIGHT -->
+
+                    <div class="cost-form-group">
+
+                        <label for="ocean_freight">
+                            Ocean Freight
+                        </label>
+
+                        <div class="cost-input-wrapper">
+
+                            <span class="cost-currency">
+                                $
+                            </span>
+
+                            <input
+                                type="number"
+                                id="ocean_freight"
+                                name="ocean_freight"
+                                class="cost-input"
+                                value="{{ landed_cost.ocean_freight }}"
+                                min="0"
+                                step="0.01"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- CUSTOMS DUTIES -->
+
+                    <div class="cost-form-group">
+
+                        <label for="customs_duties">
+                            Customs / Duties
+                        </label>
+
+                        <div class="cost-input-wrapper">
+
+                            <span class="cost-currency">
+                                $
+                            </span>
+
+                            <input
+                                type="number"
+                                id="customs_duties"
+                                name="customs_duties"
+                                class="cost-input"
+                                value="{{ landed_cost.customs_duties }}"
+                                min="0"
+                                step="0.01"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- INSURANCE -->
+
+                    <div class="cost-form-group">
+
+                        <label for="insurance">
+                            Insurance
+                        </label>
+
+                        <div class="cost-input-wrapper">
+
+                            <span class="cost-currency">
+                                $
+                            </span>
+
+                            <input
+                                type="number"
+                                id="insurance"
+                                name="insurance"
+                                class="cost-input"
+                                value="{{ landed_cost.insurance }}"
+                                min="0"
+                                step="0.01"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- LOCAL TRANSPORT -->
+
+                    <div class="cost-form-group">
+
+                        <label for="local_transport">
+                            Local Transport
+                        </label>
+
+                        <div class="cost-input-wrapper">
+
+                            <span class="cost-currency">
+                                $
+                            </span>
+
+                            <input
+                                type="number"
+                                id="local_transport"
+                                name="local_transport"
+                                class="cost-input"
+                                value="{{ landed_cost.local_transport }}"
+                                min="0"
+                                step="0.01"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- OTHER COSTS -->
+
+                    <div class="cost-form-group">
+
+                        <label for="other_costs">
+                            Other Costs
+                        </label>
+
+                        <div class="cost-input-wrapper">
+
+                            <span class="cost-currency">
+                                $
+                            </span>
+
+                            <input
+                                type="number"
+                                id="other_costs"
+                                name="other_costs"
+                                class="cost-input"
+                                value="{{ landed_cost.other_costs }}"
+                                min="0"
+                                step="0.01"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- QUANTITY -->
+
+                    <div class="cost-form-group">
+
+                        <label for="quantity">
+                            Quantity
+                        </label>
+
+                        <div class="cost-input-wrapper">
+
+                            <input
+                                type="number"
+                                id="quantity"
+                                name="quantity"
+                                class="cost-input quantity-input"
+                                value="{{ landed_cost.quantity }}"
+                                min="0"
+                                step="1"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- =================================
+                     CURRENT SUMMARY
+                ================================== -->
+
+                <div class="cost-current-summary">
+
+
+                    <div>
+
+                        <span>
+                            CURRENT TOTAL LANDED COST
+                        </span>
+
+                        <strong>
+                            ${{ landed_cost.total_landed_cost|floatformat:2 }}
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            CURRENT COST PER UNIT
+                        </span>
+
+                        <strong>
+                            ${{ landed_cost.cost_per_unit|floatformat:2 }}
+                        </strong>
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- =================================
+                     ACTIONS
+                ================================== -->
+
+                <div class="cost-form-actions">
+
+                    <a
+                        href="{% url 'view_shipment' shipment.id %}"
+                        class="btn btn-cancel"
+                    >
+                        Cancel
+                    </a>
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary"
+                    >
+                        Save Costs
+                    </button>
+
+                </div>
+
+
+            </form>
+
+        </section>
+
+
+    </main>
+
+
+</body>
+
+</html>

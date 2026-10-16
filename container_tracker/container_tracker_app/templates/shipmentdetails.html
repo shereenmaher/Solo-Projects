@@ -65,14 +65,12 @@
                     Hi, {{ user.firstname }}
                 </span>
 
-
                 <a
                     href="{% url 'dashboard' %}"
                     class="btn btn-outline"
                 >
                     Dashboard
                 </a>
-
 
                 <a
                     href="{% url 'logout' %}"
@@ -86,7 +84,6 @@
         </div>
 
     </nav>
-
 
 
     <!-- =========================================
@@ -106,13 +103,11 @@
         </a>
 
 
-
         <!-- =========================================
              SHIPMENT HEADER
         ========================================== -->
 
         <section class="shipment-details-header">
-
 
             <div>
 
@@ -135,7 +130,6 @@
             </div>
 
 
-
             <!-- STATUS -->
 
             <div>
@@ -148,7 +142,6 @@
                         In Transit
                     </span>
 
-
                 {% elif shipment.status == "ARRIVED" %}
 
                     <span
@@ -157,7 +150,6 @@
                         Arrived
                     </span>
 
-
                 {% elif shipment.status == "DELIVERED" %}
 
                     <span
@@ -165,7 +157,6 @@
                     >
                         Delivered
                     </span>
-
 
                 {% else %}
 
@@ -179,9 +170,7 @@
 
             </div>
 
-
         </section>
-
 
 
         <!-- =========================================
@@ -208,7 +197,6 @@
                 </div>
 
 
-
                 <!-- ROUTE LINE -->
 
                 <div class="route-line">
@@ -222,7 +210,6 @@
                     </div>
 
                 </div>
-
 
 
                 <!-- DESTINATION -->
@@ -241,11 +228,9 @@
 
                 </div>
 
-
             </div>
 
         </section>
-
 
 
         <!-- =========================================
@@ -272,7 +257,6 @@
             </div>
 
 
-
             <!-- VESSEL -->
 
             <div class="info-card">
@@ -288,11 +272,9 @@
             </div>
 
 
-
             <!-- ARRIVAL -->
 
             <div class="info-card">
-
 
                 {% if shipment.ata %}
 
@@ -302,115 +284,72 @@
                         ACTUAL ARRIVAL
                     </span>
 
-
                     <span class="info-value">
-
                         {{ shipment.ata|date:"M d, Y" }}
-
                     </span>
-
 
                     <span class="info-secondary">
-
                         {{ shipment.ata|date:"H:i" }}
-
                     </span>
-
 
                 {% else %}
 
-
                     <span class="info-label">
-
                         ESTIMATED ARRIVAL
-
                     </span>
-
 
                     {% if shipment.eta %}
 
-
                         <span class="info-value">
-
                             {{ shipment.eta|date:"M d, Y" }}
-
                         </span>
-
 
                         <span class="info-secondary">
-
                             {{ shipment.eta|date:"H:i" }}
-
                         </span>
-
 
                     {% else %}
 
-
                         <span class="info-value">
-
                             Not available
-
                         </span>
-
 
                     {% endif %}
 
-
                 {% endif %}
 
-
             </div>
-
 
 
             <!-- LAST CHECKED -->
 
             <div class="info-card">
 
-
                 <span class="info-label">
-
                     LAST CHECKED
-
                 </span>
-
 
                 {% if shipment.lastchecked %}
 
-
                     <span class="info-value">
-
                         {{ shipment.lastchecked|date:"M d, Y" }}
-
                     </span>
-
 
                     <span class="info-secondary">
-
                         {{ shipment.lastchecked|date:"H:i" }}
-
                     </span>
-
 
                 {% else %}
 
-
                     <span class="info-value">
-
                         Not checked yet
-
                     </span>
-
 
                 {% endif %}
 
-
             </div>
 
-
         </section>
-
 
 
         <!-- =========================================
@@ -423,7 +362,6 @@
             <!-- DOCUMENT HEADER -->
 
             <div class="documents-header">
-
 
                 <div>
 
@@ -439,19 +377,13 @@
 
 
                 <div class="readiness-percentage">
-
                     {{ documents.readiness_percentage }}%
-
                 </div>
-
 
             </div>
 
 
-
-            <!-- =====================================
-                 READINESS BAR
-            ====================================== -->
+            <!-- READINESS BAR -->
 
             <div class="readiness-bar">
 
@@ -464,19 +396,14 @@
             </div>
 
 
-
-            <!-- =====================================
-                 DOCUMENT LIST
-            ====================================== -->
+            <!-- DOCUMENT LIST -->
 
             <div class="document-list">
-
 
 
                 <!-- COMMERCIAL INVOICE -->
 
                 <div class="document-item">
-
 
                     {% if documents.commercial_invoice %}
 
@@ -492,20 +419,16 @@
 
                     {% endif %}
 
-
                     <span>
                         Commercial Invoice
                     </span>
 
-
                 </div>
-
 
 
                 <!-- PACKING LIST -->
 
                 <div class="document-item">
-
 
                     {% if documents.packing_list %}
 
@@ -521,20 +444,16 @@
 
                     {% endif %}
 
-
                     <span>
                         Packing List
                     </span>
 
-
                 </div>
-
 
 
                 <!-- BILL OF LADING -->
 
                 <div class="document-item">
-
 
                     {% if documents.bill_of_lading %}
 
@@ -550,20 +469,16 @@
 
                     {% endif %}
 
-
                     <span>
                         Bill of Lading
                     </span>
 
-
                 </div>
-
 
 
                 <!-- CERTIFICATE OF ORIGIN -->
 
                 <div class="document-item">
-
 
                     {% if documents.certificate_of_origin %}
 
@@ -579,20 +494,16 @@
 
                     {% endif %}
 
-
                     <span>
                         Certificate of Origin
                     </span>
 
-
                 </div>
-
 
 
                 <!-- INSURANCE -->
 
                 <div class="document-item">
-
 
                     {% if documents.insurance %}
 
@@ -608,20 +519,16 @@
 
                     {% endif %}
 
-
                     <span>
                         Insurance
                     </span>
 
-
                 </div>
-
 
 
                 <!-- CUSTOMS DECLARATION -->
 
                 <div class="document-item">
-
 
                     {% if documents.customs_declaration %}
 
@@ -637,94 +544,54 @@
 
                     {% endif %}
 
-
                     <span>
                         Customs Declaration
                     </span>
 
-
                 </div>
-
 
             </div>
 
 
-
-            <!-- =====================================
-                 DOCUMENT STATUS / RISK
-            ====================================== -->
-
+            <!-- DOCUMENT STATUS / RISK -->
 
             {% if documents.missing_count > 0 %}
 
-
-                <!--
-                    Shipment has missing documents.
-
-                    If arrival is 0-3 days away,
-                    show the stronger risk warning.
-                -->
-
-
                 {% if shipment.days_until_arrival >= 0 and shipment.days_until_arrival <= 3 %}
 
-
                     <div class="documents-danger">
-
 
                         <strong>
                             🚨 Documentation Risk
                         </strong>
 
-
                         <p>
-
                             Shipment is expected in
-
                             {{ shipment.days_until_arrival }}
-
                             day{{ shipment.days_until_arrival|pluralize }},
-
                             but
-
                             {{ documents.missing_count }}
-
                             required
                             document{{ documents.missing_count|pluralize }}
-
                             still missing.
-
                         </p>
-
 
                     </div>
 
-
                 {% else %}
-
-
-                    <!-- NORMAL MISSING DOCUMENT WARNING -->
 
                     <div class="documents-warning">
 
                         ⚠
-
                         {{ documents.missing_count }}
-
                         document{{ documents.missing_count|pluralize }}
-
                         still missing
 
                     </div>
 
-
                 {% endif %}
 
-
             {% else %}
-
-
-                <!-- ALL DOCUMENTS COMPLETE -->
 
                 <div class="documents-ready">
 
@@ -732,25 +599,204 @@
 
                 </div>
 
+            {% endif %}
+
+
+            <!-- MANAGE DOCUMENTS -->
+
+            {% if shipment.user.id == user.id %}
+
+                <a
+                    href="{% url 'edit_shipment_documents' shipment.id %}"
+                    class="btn-manage-documents"
+                >
+                    Manage Documents
+                </a>
+
+            {% endif %}
+
+        </section>
+
+
+        <!-- =========================================
+             LANDED COST
+        ========================================== -->
+
+        <section class="landed-cost-card">
+
+
+            <!-- LANDED COST HEADER -->
+
+            <div class="landed-cost-header">
+
+                <div>
+
+                    <p class="section-label">
+                        COSTS
+                    </p>
+
+                    <h2>
+                        Landed Cost
+                    </h2>
+
+                    <p class="landed-cost-description">
+                        Total cost of bringing this shipment
+                        to your warehouse.
+                    </p>
+
+                </div>
+
+
+                <div class="landed-cost-total">
+
+                    <span>
+                        TOTAL LANDED COST
+                    </span>
+
+                    <strong>
+                        ${{ landed_cost.total_landed_cost|floatformat:2 }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- COST BREAKDOWN -->
+
+            <div class="landed-cost-grid">
+
+
+                <div class="cost-item">
+
+                    <span class="cost-label">
+                        Goods Value
+                    </span>
+
+                    <strong>
+                        ${{ landed_cost.goods_value|floatformat:2 }}
+                    </strong>
+
+                </div>
+
+
+                <div class="cost-item">
+
+                    <span class="cost-label">
+                        Ocean Freight
+                    </span>
+
+                    <strong>
+                        ${{ landed_cost.ocean_freight|floatformat:2 }}
+                    </strong>
+
+                </div>
+
+
+                <div class="cost-item">
+
+                    <span class="cost-label">
+                        Customs / Duties
+                    </span>
+
+                    <strong>
+                        ${{ landed_cost.customs_duties|floatformat:2 }}
+                    </strong>
+
+                </div>
+
+
+                <div class="cost-item">
+
+                    <span class="cost-label">
+                        Insurance
+                    </span>
+
+                    <strong>
+                        ${{ landed_cost.insurance|floatformat:2 }}
+                    </strong>
+
+                </div>
+
+
+                <div class="cost-item">
+
+                    <span class="cost-label">
+                        Local Transport
+                    </span>
+
+                    <strong>
+                        ${{ landed_cost.local_transport|floatformat:2 }}
+                    </strong>
+
+                </div>
+
+
+                <div class="cost-item">
+
+                    <span class="cost-label">
+                        Other Costs
+                    </span>
+
+                    <strong>
+                        ${{ landed_cost.other_costs|floatformat:2 }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- COST SUMMARY -->
+
+            <div class="landed-cost-summary">
+
+
+                <div>
+
+                    <span class="cost-summary-label">
+                        QUANTITY
+                    </span>
+
+                    <strong>
+                        {{ landed_cost.quantity }}
+                        unit{{ landed_cost.quantity|pluralize }}
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span class="cost-summary-label">
+                        LANDED COST / UNIT
+                    </span>
+
+                    <strong>
+                        ${{ landed_cost.cost_per_unit|floatformat:2 }}
+                    </strong>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- MANAGE COSTS -->
+
+            {% if shipment.user.id == user.id %}
+
+                <a
+                    href="{% url 'edit_landed_cost' shipment.id %}"
+                    class="btn-manage-costs"
+                >
+                    Manage Costs
+                </a>
 
             {% endif %}
 
 
-
-            <!-- =====================================
-                 MANAGE DOCUMENTS
-            ====================================== -->
-
-            <a
-                href="{% url 'edit_shipment_documents' shipment.id %}"
-                class="btn-manage-documents"
-            >
-                Manage Documents
-            </a>
-
-
         </section>
-
 
 
         <!-- =========================================
@@ -761,25 +807,18 @@
             class="card tracking-actions-card"
         >
 
-
             <div>
-
 
                 <h2>
                     Tracking Information
                 </h2>
 
-
                 <p>
-
                     View the shipment journey or request
                     the latest tracking information.
-
                 </p>
 
-
             </div>
-
 
 
             <div class="shipment-actions">
@@ -795,7 +834,6 @@
                 </a>
 
 
-
                 <!-- REFRESH -->
 
                 <form
@@ -804,9 +842,7 @@
                     class="refresh-form"
                 >
 
-
                     {% csrf_token %}
-
 
                     <button
                         type="submit"
@@ -815,12 +851,9 @@
                         Refresh Tracking Data
                     </button>
 
-
                 </form>
 
-
             </div>
-
 
         </section>
 
