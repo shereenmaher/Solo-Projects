@@ -158,7 +158,7 @@ Possible future features include:
 - Inventory and stock-out risk calculations
 - Additional shipping API integrations
 - Improved reporting and analytics
-- Cloud deployment
+
 
 ---
 
