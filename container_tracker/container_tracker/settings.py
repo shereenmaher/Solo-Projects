@@ -127,5 +127,3 @@ MAILERS = {
     },
 }
 
-# Email settings for development/testing
-DEFAULT_FROM_EMAIL = "tracker@example.com"

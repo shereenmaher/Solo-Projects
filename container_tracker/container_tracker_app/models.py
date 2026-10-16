@@ -7,8 +7,6 @@ from django.utils import timezone
 from django.utils.dateparse import parse_datetime
 import json
 import os
-from django.core.mail import send_mail
-from django.conf import settings
 
 
 # =========================================================
@@ -17,13 +15,13 @@ from django.conf import settings
 
 # Retrieve data from Traqo when a shipment is first created
 def fetch_container_data(number):
-
+    #retrieve the API key from the environment
     api_key = os.environ.get("TRAQO_API_KEY")
 
     if not api_key:
         print("Traqo API key is missing")
         return None
-
+    
     url = f"https://traqocontainer.com/api/v1/container/{number}"
 
     headers = {
@@ -53,7 +51,7 @@ def fetch_container_data(number):
 
 # Retrieve an already tracked shipment from Traqo
 def fetch_tracked_shipment(number):
-
+    
     api_key = os.environ.get("TRAQO_API_KEY")
 
     if not api_key:
@@ -114,7 +112,7 @@ def fetch_tracked_shipment(number):
     return data
 
 
-# Handles Traqo's date format
+# Handles Traqo's date format(API gives date as text)
 def parse_api_datetime(value):
 
     if not value:
@@ -659,147 +657,6 @@ class shipmentManager(models.Manager):
                         )
                     )
                 )
-
-
-        # =================================================
-        # 5. SEND EMAIL IF STATUS, ETA OR ATA CHANGED
-        # =================================================
-
-        if was_checked and (
-
-            old_status != shipment.status
-
-            or old_eta != shipment.eta
-
-            or old_ata != shipment.ata
-        ):
-
-
-            # Format old ETA
-
-            if old_eta:
-
-                old_eta_email = (
-                    timezone.localtime(
-                        old_eta
-                    ).strftime(
-                        "%b %d, %Y %H:00"
-                    )
-                )
-
-            else:
-
-                old_eta_email = (
-                    "Unknown"
-                )
-
-
-            # Format current ETA
-
-            if shipment.eta:
-
-                new_eta_email = (
-                    timezone.localtime(
-                        shipment.eta
-                    ).strftime(
-                        "%b %d, %Y %H:00"
-                    )
-                )
-
-            else:
-
-                new_eta_email = (
-                    "Unknown"
-                )
-
-
-            # Format old ATA
-
-            if old_ata:
-
-                old_ata_email = (
-                    timezone.localtime(
-                        old_ata
-                    ).strftime(
-                        "%b %d, %Y %H:00"
-                    )
-                )
-
-            else:
-
-                old_ata_email = (
-                    "Not arrived"
-                )
-
-
-            # Format current ATA
-
-            if shipment.ata:
-
-                new_ata_email = (
-                    timezone.localtime(
-                        shipment.ata
-                    ).strftime(
-                        "%b %d, %Y %H:00"
-                    )
-                )
-
-            else:
-
-                new_ata_email = (
-                    "Not arrived"
-                )
-
-
-            send_mail(
-
-                subject=(
-                    f"Shipment update: "
-                    f"{shipment.name}"
-                ),
-
-                message=(
-
-                    f"Hello "
-                    f"{shipment.user.firstname},\n\n"
-
-                    f"Your shipment "
-                    f"'{shipment.name}' "
-                    f"has been updated.\n"
-
-                    f"Container: "
-                    f"{shipment.number}\n\n"
-
-                    f"Previous status: "
-                    f"{old_status}\n"
-
-                    f"Current status: "
-                    f"{shipment.status}\n\n"
-
-                    f"Previous ETA: "
-                    f"{old_eta_email}\n"
-
-                    f"Current ETA: "
-                    f"{new_eta_email}\n\n"
-
-                    f"Previous ATA: "
-                    f"{old_ata_email}\n"
-
-                    f"Current ATA: "
-                    f"{new_ata_email}\n"
-                ),
-
-                from_email=(
-                    settings.DEFAULT_FROM_EMAIL
-                ),
-
-                recipient_list=[
-                    shipment.user.email
-                ],
-
-                fail_silently=True
-            )
-
 
         return shipment
 
